@@ -1,20 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
-// Role schema
-const Role = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    enum: ["super-admin", "manager", "student"],
-  },
-  status: {
-    type: String,
-    required: false,
-    default: null,
-  },
-});
-
 // Users schema
 const Users = new mongoose.Schema(
   {
@@ -47,7 +33,10 @@ const Users = new mongoose.Schema(
       type: String,
       required: true,
     },
-    role: Role,
+    role: {
+      type: String,
+      required: true,
+    },
     school: {
       type: String,
       required: true,
@@ -67,20 +56,17 @@ const Users = new mongoose.Schema(
         required: false,
       },
     ],
-    schoolCountries: [
+    targetSchools: [
       {
         type: String,
         required: false,
       },
     ],
-    manager_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
     courses_id: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Cours",
+        required: false,
       },
     ],
     lastAccess: {
@@ -89,6 +75,10 @@ const Users = new mongoose.Schema(
       default: null,
     },
     resetToken: {
+      type: String,
+      default: null,
+    },
+    status: {
       type: String,
       default: null,
     },
