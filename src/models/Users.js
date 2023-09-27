@@ -27,11 +27,13 @@ const Users = new mongoose.Schema(
     },
     country: {
       type: String,
-      required: true,
+      required: false,
+      default: null,
     },
     city: {
       type: String,
-      required: true,
+      required: false,
+      default: null,
     },
     role: {
       type: String,
@@ -39,11 +41,13 @@ const Users = new mongoose.Schema(
     },
     school: {
       type: String,
-      required: true,
+      required: false,
+      default: null,
     },
     birthday: {
       type: String,
-      required: true,
+      required: false,
+      default: null,
     },
     profile_img: {
       type: String,
@@ -54,12 +58,14 @@ const Users = new mongoose.Schema(
       {
         type: String,
         required: false,
+        default: null,
       },
     ],
     targetSchools: [
       {
         type: String,
         required: false,
+        default: null,
       },
     ],
     courses_id: [
@@ -67,6 +73,7 @@ const Users = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: "Cours",
         required: false,
+        default: null,
       },
     ],
     lastAccess: {
@@ -80,6 +87,7 @@ const Users = new mongoose.Schema(
     },
     status: {
       type: String,
+      required: false,
       default: null,
     },
   },
