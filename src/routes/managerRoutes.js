@@ -12,4 +12,9 @@ router
   .route("/pending-students/")
   .get(authorization, authorizationRole("manager"), Manager.getPendingStudents);
 
+// accept student
+router
+  .route("/accept-student/:student_id")
+  .post(authorization, authorizationRole("manager"), Manager.acceptStudent);
+
 module.exports = router;

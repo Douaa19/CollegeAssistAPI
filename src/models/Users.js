@@ -90,6 +90,10 @@ const Users = new mongoose.Schema(
       required: false,
       default: null,
     },
+    manager_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
   {
     timestamps: true,
