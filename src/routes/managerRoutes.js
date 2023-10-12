@@ -17,4 +17,9 @@ router
   .route("/accept-student/:student_id")
   .post(authorization, authorizationRole("manager"), Manager.acceptStudent);
 
+// get my students
+router
+  .route("/my-students")
+  .get(authorization, authorizationRole("manager"), Manager.getMyStudents);
+
 module.exports = router;

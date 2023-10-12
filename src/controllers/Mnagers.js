@@ -35,7 +35,25 @@ const acceptStudent = async (req, res) => {
   }
 };
 
+// get my students
+const getMyStudents = async (req, res) => {
+  try {
+    const myStudents = await User.find({
+      manager_id: req.user.id,
+      status: "accepted",
+    });
+    if (myStudents.length > 0) {
+      res.status(200).send(myStudents);
+    } else {
+      res.status(400).send({ messageError: "Students not found" });
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   getPendingStudents,
   acceptStudent,
+  getMyStudents,
 };
