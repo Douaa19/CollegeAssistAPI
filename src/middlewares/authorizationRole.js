@@ -1,5 +1,4 @@
 require("dotenv").config();
-const jwt = require("jsonwebtoken");
 
 const authorizationRole = (...role) => {
   return (req, res, next) => {
@@ -11,4 +10,4 @@ const authorizationRole = (...role) => {
   };
 };
 
-module.exports = { authorizationRole };
+module.exports = authorizationRole;

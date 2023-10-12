@@ -1,4 +1,5 @@
 const User = require("./Users");
+const Manager = require("./Mnagers");
 
 const fs = require("fs");
 const path = require("path");
@@ -46,4 +47,5 @@ const uploadImage = multer({
 module.exports = {
   uploadImage,
   User,
+  Manager,
 };
