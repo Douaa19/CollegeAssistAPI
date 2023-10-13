@@ -10,12 +10,20 @@ const { Manager } = require("../controllers");
 // get pending studnts
 router
   .route("/pending-students/")
-  .get(authorization, authorizationRole("manager"), Manager.getPendingStudents);
+  .get(
+    authorization,
+    authorizationRole("manager", "super-admin"),
+    Manager.getPendingStudents
+  );
 
 // accept student
 router
   .route("/accept-student/:student_id")
-  .post(authorization, authorizationRole("manager"), Manager.acceptStudent);
+  .post(
+    authorization,
+    authorizationRole("manager", "super-admin"),
+    Manager.acceptStudent
+  );
 
 // get my students
 router

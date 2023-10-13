@@ -16,7 +16,7 @@ const getPendingStudents = async (req, res) => {
     res.status(500).send(error.message);
   }
 };
-
+// 0656427600
 // accept student
 const acceptStudent = async (req, res) => {
   try {
@@ -24,8 +24,6 @@ const acceptStudent = async (req, res) => {
     const student = await User.findById(student_id);
     if (student) {
       student.status = "accepted";
-      student.manager_id = req.user.id;
-      student.save();
       res.status(200).send({ messageSuccess: "Student accepted" });
     } else {
       res.status(400).send({ messageError: "Student not found" });

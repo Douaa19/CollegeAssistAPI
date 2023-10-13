@@ -3,6 +3,8 @@ const moment = require("moment");
 const jwt = require("jsonwebtoken");
 const mailer = require("nodemailer");
 const uuid = require("node-uuid");
+const cron = require("node-cron");
+const { Manager } = require(".");
 
 const register = async (req, res) => {
   try {
@@ -571,9 +573,53 @@ const resetPassword = async (req, res) => {
   }
 };
 
+// assign each new student to his manager
+const assingStudentsToManagers = async (req, res) => {
+  try {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    //
+    yesterday.setHours(0, 0, 0, 0);
+    const endOfYesterday = new Date(yesterday);
+    endOfYesterday.setHours(23, 59, 59, 999);
+
+    // Fetch new students
+    const students = await User.find({
+      role: "student",
+      status: "pending",
+      createdAt: { $gte: yesterday, $lt: endOfYesterday },
+    });
+
+    // Fetch managers
+    const managers = await User.find({ role: "manager" });
+
+    // Distribute students to managers
+    let studentIndex = 0;
+    for (let managerIndex = 0; studentIndex < students.length; managerIndex++) {
+      const manager = managers[managerIndex % managers.length];
+      students[studentIndex].manager_id = manager._id;
+      await students[studentIndex].save();
+      studentIndex++;
+    }
+
+    res.status(200).send(students);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
+cron.schedule("0 0 * * *", async () => {
+  try {
+    await assingStudentsToManagers();
+  } catch (error) {
+    console.error("Error executing assingStudentsToManagers");
+  }
+});
+
 module.exports = {
   register,
   login,
   forgetPassword,
   resetPassword,
+  assingStudentsToManagers,
 };
