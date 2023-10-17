@@ -602,7 +602,7 @@ const assingStudentsToManagers = async (req, res) => {
       studentIndex++;
     }
 
-    res.status(200).send(students);
+    console.log(students);
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -612,7 +612,7 @@ cron.schedule("0 0 * * *", async () => {
   try {
     await assingStudentsToManagers();
   } catch (error) {
-    console.error("Error executing assingStudentsToManagers");
+    console.error("Error executing assingStudentsToManagers", error.message);
   }
 });
 
