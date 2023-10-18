@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-// Users schema
+// StudentsCourses schema
 const StudentsCourses = new mongoose.Schema(
   {
     course_id: [

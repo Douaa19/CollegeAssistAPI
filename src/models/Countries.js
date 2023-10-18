@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-// Users schema
+// Countries schema
 const Countries = new mongoose.Schema(
   {
     name: {

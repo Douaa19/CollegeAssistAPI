@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-// Users schema
+// Courses schema
 const Courses = new mongoose.Schema(
   {
     title: {
