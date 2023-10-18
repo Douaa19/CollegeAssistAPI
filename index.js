@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const routes = require("./src/routes");
 const morgan = require("morgan");
 const PORT = process.env.PORT || 8000;
 
@@ -13,7 +14,7 @@ require("./src/config/mongoose");
 app.use(morgan("tiny"));
 app.use(
   cors({
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
 app.use(
@@ -23,14 +24,8 @@ app.use(
 );
 app.use(express.json());
 
-// welcom
-app.get("/api", (req, res) => {
-  res.json({
-    message: "Welcom to College Assist",
-  });
-});
-
-// use routes
+// routes
+app.use(routes);
 
 // listen to the port
 app.listen(PORT, () => {
