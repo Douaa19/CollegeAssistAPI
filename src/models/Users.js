@@ -71,7 +71,7 @@ const Users = new mongoose.Schema(
     courses_id: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Cours",
+        ref: "Course",
         required: false,
         default: null,
       },
