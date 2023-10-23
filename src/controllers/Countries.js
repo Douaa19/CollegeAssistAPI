@@ -12,7 +12,23 @@ const createCountry = async (req, res) => {
       if (newCountry) {
         res.status(200).send({ messageSuccess: "Country created", newCountry });
       } else {
+        res.status(400).send({ messageError: "Country not created" });
       }
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
+// delete country
+const deleteCountry = async (req, res) => {
+  try {
+    const { country_id } = req.params;
+    const deleteCountry = await Country.findByIdAndDelete(country_id);
+    if (deleteCountry) {
+      res.status(200).send({ messageError: "Country deleted successfully" });
+    } else {
+      res.status(400).send({ messageError: "Country not deleted" });
     }
   } catch (error) {
     res.status(500).send(error.message);
@@ -21,4 +37,5 @@ const createCountry = async (req, res) => {
 
 module.exports = {
   createCountry,
+  deleteCountry,
 };

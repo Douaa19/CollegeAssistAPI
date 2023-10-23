@@ -16,4 +16,13 @@ router
     Country.createCountry
   );
 
+// delete country
+router
+  .route("/delete-country/:country_id")
+  .post(
+    authorization,
+    authorizationRole("super-admin", "manager"),
+    Country.deleteCountry
+  );
+
 module.exports = router;
