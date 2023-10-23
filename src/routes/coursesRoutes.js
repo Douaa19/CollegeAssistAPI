@@ -16,4 +16,7 @@ router
     Course.createCourse
   );
 
+// get course
+router.route("/get-course/:course_id").get(Course.getCourse);
+
 module.exports = router;

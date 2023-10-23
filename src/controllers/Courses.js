@@ -36,7 +36,20 @@ const createCourse = async (req, res) => {
 };
 
 // get course
-const getCourse = async (req, res) => {};
+const getCourse = async (req, res) => {
+  try {
+    const { course_id } = req.params;
+    const course = await Course.findById(course_id);
+
+    if (!course) {
+      res.status(404).send({ messageError: "Course not found" });
+    } else {
+      res.status(200).send(course);
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
 
 // get courses
 const getCourses = async (req, res) => {};
