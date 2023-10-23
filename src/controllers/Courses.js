@@ -25,7 +25,7 @@ const createCourse = async (req, res) => {
         country_id: data[4],
       });
       if (newCourse) {
-        res.status(200).send({ messageSuccess: "Course registred" });
+        res.status(200).send({ messageSuccess: "Course registred", newCourse });
       } else {
         res.status(400).send({ messageError: "Course not registred" });
       }

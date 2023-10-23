@@ -1,6 +1,7 @@
 const User = require("./Users");
 const Manager = require("./Mnagers");
 const Course = require("./Courses");
+const Country = require("./Countries");
 
 const fs = require("fs");
 const path = require("path");
@@ -58,4 +59,5 @@ module.exports = {
   User,
   Manager,
   Course,
+  Country,
 };
