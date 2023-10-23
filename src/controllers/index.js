@@ -1,5 +1,6 @@
 const User = require("./Users");
 const Manager = require("./Mnagers");
+const Course = require("./Courses");
 
 const fs = require("fs");
 const path = require("path");
@@ -48,4 +49,5 @@ module.exports = {
   uploadImage,
   User,
   Manager,
+  Course,
 };
