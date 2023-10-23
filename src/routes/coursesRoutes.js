@@ -5,13 +5,14 @@ const router = express.Router();
 const { authorization, authorizationRole } = require("../middlewares");
 
 // controllers
-const { Course } = require("../controllers");
+const { Course, uploadImageCourse } = require("../controllers");
 
 router
   .route("/create-course")
   .post(
     authorization,
     authorizationRole("super-admin", "manager"),
+    uploadImageCourse.single("image_course"),
     Course.createCourse
   );
 

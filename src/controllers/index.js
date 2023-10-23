@@ -45,8 +45,16 @@ const uploadImage = multer({
   ),
 });
 
+const uploadImageCourse = multer({
+  fileFilter: fFilter,
+  storage: storage(
+    path.join(path.dirname(__dirname), "public", "images", "courses")
+  ),
+});
+
 module.exports = {
   uploadImage,
+  uploadImageCourse,
   User,
   Manager,
   Course,
