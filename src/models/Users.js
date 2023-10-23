@@ -68,14 +68,6 @@ const Users = new mongoose.Schema(
         default: null,
       },
     ],
-    courses_id: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Cours",
-        required: false,
-        default: null,
-      },
-    ],
     lastAccess: {
       type: String,
       required: true,
