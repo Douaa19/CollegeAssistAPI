@@ -19,4 +19,7 @@ router
 // get course
 router.route("/get-course/:course_id").get(Course.getCourse);
 
+// get courses
+router.route("/").get(Course.getCourses);
+
 module.exports = router;

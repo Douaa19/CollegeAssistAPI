@@ -52,7 +52,19 @@ const getCourse = async (req, res) => {
 };
 
 // get courses
-const getCourses = async (req, res) => {};
+const getCourses = async (req, res) => {
+  try {
+    const courses = await Course.find();
+
+    if (courses.length > 0) {
+      res.status(200).send(courses);
+    } else {
+      res.status(404).send({ messageError: "Courses not found" });
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
 
 // update course
 const updateCourse = async (req, res) => {};
