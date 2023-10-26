@@ -1,4 +1,4 @@
-const { Course } = require("../models");
+const { Course, Tutorial } = require("../models");
 
 // create course
 const createCourse = async (req, res) => {
@@ -70,7 +70,19 @@ const getCourses = async (req, res) => {
 const updateCourse = async (req, res) => {};
 
 // delete course
-const deleteCourse = async (req, res) => {};
+const deleteCourse = async (req, res) => {
+  try {
+    const { course_id } = req.params;
+    // delete all tutorials related with this course
+    // const tutorials = await Tut({ course_id });
+    if (tutorials.length > 0) {
+      
+    }
+    const course = await Course.findById(course_id);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
 
 // get course by tutorial
 const getCourseByTutorial = async (req, res) => {};

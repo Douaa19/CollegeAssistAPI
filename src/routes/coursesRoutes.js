@@ -22,4 +22,13 @@ router.route("/get-course/:course_id").get(Course.getCourse);
 // get courses
 router.route("/").get(Course.getCourses);
 
+// delete course
+router
+  .route("/delete-course/:course_id")
+  .post(
+    authorization,
+    authorizationRole("super-admin", "manager"),
+    Course.deleteCourse
+  );
+
 module.exports = router;
