@@ -74,11 +74,16 @@ const deleteCourse = async (req, res) => {
   try {
     const { course_id } = req.params;
     // delete all tutorials related with this course
-    // const tutorials = await Tut({ course_id });
-    if (tutorials.length > 0) {
-      
+    const tutorials = await Tutorial.deleteMany({ course_id });
+
+    if (tutorials) {
+      const course = await Course.findByIdAndDelete(course_id);
+      if (course) {
+        res.status(200).send({ messageSuccess: "Course deleted successfully" });
+      }
+    } else {
+      res.status(400).send({ messageError: "Tutorials did not deleted" });
     }
-    const course = await Course.findById(course_id);
   } catch (error) {
     res.status(500).send(error.message);
   }
