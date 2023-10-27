@@ -45,7 +45,23 @@ const getTutorials = async (req, res) => {
   }
 };
 
+// get one tutorial
+const getTutorial = async (req, res) => {
+  try {
+    const { tutorial_id } = req.params;
+    const tutorial = await Tutorial.findById(tutorial_id);
+    if (tutorial) {
+      res.status(200).send(tutorial);
+    } else {
+      res.status(404).send({ messageError: "Tutorial not found!" });
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createTutorial,
-  getTutorials
+  getTutorials,
+  getTutorial,
 };

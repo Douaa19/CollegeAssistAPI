@@ -18,4 +18,6 @@ router
 
 router.route("/").get(authorization, Tutorial.getTutorials);
 
+router.route("/:tutorial_id").get(authorization, Tutorial.getTutorial);
+
 module.exports = router;
