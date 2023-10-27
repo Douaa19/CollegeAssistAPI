@@ -32,4 +32,13 @@ router
     Tutorial.deleteTutorial
   );
 
+router
+  .route("/edit/:tutorial_id")
+  .post(
+    authorization,
+    authorizationRole("super-admin", "manager"),
+    uploadFilesTutorials.single("attachment"),
+    Tutorial.editTutorial
+  );
+
 module.exports = router;

@@ -130,6 +130,60 @@ const deleteTutorial = async (req, res) => {
   }
 };
 
+// edit tutorial
+const editTutorial = async (req, res) => {
+  try {
+    const path = "src\\public\\tutorials\\";
+    const { tutorial_id } = req.params;
+    const tutorial = await Tutorial.findById(tutorial_id);
+
+    if (tutorial) {
+      if (req.file.filename) {
+        fs.unlink(`${path}${tutorial.attachment}`, (err) => {
+          if (!err) {
+            console.log("File deleted successfuly!");
+          } else {
+            console.log(err, "File not found");
+          }
+        });
+      }
+
+      const newTutorial = {
+        title: req.body.title,
+        course_id: req.body.course_id,
+        attachment: req.file.filename,
+      };
+
+      const tutorialExists = await Tutorial.find({
+        title: newTutorial[0],
+      });
+
+      if (tutorialExists.length > 0) {
+        res
+          .status(200)
+          .send({ messageError: "This title is already exists", tutoExists });
+      } else {
+        await Tutorial.findByIdAndUpdate(tutorial_id, newTutorial).then(
+          (result) => {
+            if (result) {
+              res.status(200).send({
+                messageSuccess: "Tutorial updated successfully!",
+                result,
+              });
+            } else {
+              res
+                .status(400)
+                .send({ messageSuccess: "Tutorial doesn't updated!" });
+            }
+          }
+        );
+      }
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createTutorial,
   getTutorials,
@@ -137,4 +191,5 @@ module.exports = {
   getAttachment,
   getTutorialsByCourse,
   deleteTutorial,
+  editTutorial,
 };
