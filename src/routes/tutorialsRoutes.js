@@ -16,4 +16,6 @@ router
     Tutorial.createTutorial
   );
 
+router.route("/").get(authorization, Tutorial.getTutorials);
+
 module.exports = router;
