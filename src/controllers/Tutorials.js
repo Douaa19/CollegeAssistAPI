@@ -1,4 +1,6 @@
 const { Tutorial } = require("../models");
+const path = require("path");
+const fs = require("fs");
 
 // create new tuto
 const createTutorial = async (req, res) => {
@@ -60,8 +62,31 @@ const getTutorial = async (req, res) => {
   }
 };
 
+// get attachment
+const getAttachment = async (req, res) => {
+  try {
+    await Tutorial.findOne({ attachment: req.params.attachment })
+      .exec()
+      .then((result) => {
+        res
+          .status(200)
+          .sendFile(
+            path.join(
+              path.dirname(__dirname),
+              "public",
+              "tutorials",
+              result.attachment
+            )
+          );
+      });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createTutorial,
   getTutorials,
   getTutorial,
+  getAttachment,
 };
