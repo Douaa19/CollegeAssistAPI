@@ -7,6 +7,13 @@ const { authorization, authorizationRole } = require("../middlewares");
 // controllers
 const { Tutorial, uploadFilesTutorials } = require("../controllers");
 
-router.route("/").get();
+router
+  .route("/create")
+  .post(
+    authorization,
+    authorizationRole("super-admin", "manager"),
+    uploadFilesTutorials.single("attachment"),
+    Tutorial.createTutorial
+  );
 
 module.exports = router;
