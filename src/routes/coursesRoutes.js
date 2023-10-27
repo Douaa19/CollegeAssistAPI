@@ -19,6 +19,9 @@ router
 // get course
 router.route("/get-course/:course_id").get(Course.getCourse);
 
+// get course's image
+router.route("/image/:image_name").get(Course.getImage);
+
 // get courses
 router.route("/").get(Course.getCourses);
 

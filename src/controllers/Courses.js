@@ -1,4 +1,5 @@
 const { Course, Tutorial } = require("../models");
+const path = require("path");
 
 // create course
 const createCourse = async (req, res) => {
@@ -51,6 +52,29 @@ const getCourse = async (req, res) => {
   }
 };
 
+// get course's image
+const getImage = async (req, res) => {
+  try {
+    await Course.findOne({ image_course: req.params.image_name })
+      .exec()
+      .then((result) => {
+        res
+          .status(200)
+          .sendFile(
+            path.join(
+              path.dirname(__dirname),
+              "public",
+              "images",
+              "courses",
+              result.image_course
+            )
+          );
+      });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 // get courses
 const getCourses = async (req, res) => {
   try {
@@ -95,6 +119,7 @@ const getCourseByTutorial = async (req, res) => {};
 module.exports = {
   createCourse,
   getCourse,
+  getImage,
   getCourses,
   updateCourse,
   deleteCourse,
