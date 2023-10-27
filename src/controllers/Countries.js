@@ -35,7 +35,22 @@ const deleteCountry = async (req, res) => {
   }
 };
 
+// get all countries
+const getCountries = async (req, res) => {
+  try {
+    const countries = await Country.find();
+    if (countries.length > 0) {
+      res.status(200).send(countries);
+    } else {
+      res.status(404).send({ messageError: "Countries not found" });
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createCountry,
   deleteCountry,
+  getCountries,
 };

@@ -25,4 +25,7 @@ router
     Country.deleteCountry
   );
 
+// get countries
+router.route("/").get(Country.getCountries);
+
 module.exports = router;
