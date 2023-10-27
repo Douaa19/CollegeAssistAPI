@@ -24,4 +24,12 @@ router.route("/attachment/:attachment").get(Tutorial.getAttachment);
 
 router.route("/tutorials-course/:course_id").get(Tutorial.getTutorialsByCourse);
 
+router
+  .route("/delete/:tutorial_id")
+  .post(
+    authorization,
+    authorizationRole("super-admin", "manager"),
+    Tutorial.deleteTutorial
+  );
+
 module.exports = router;

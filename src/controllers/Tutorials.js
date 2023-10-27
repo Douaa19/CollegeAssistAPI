@@ -99,10 +99,42 @@ const getTutorialsByCourse = async (req, res) => {
   }
 };
 
+// delete tutorial
+const deleteTutorial = async (req, res) => {
+  try {
+    const { tutorial_id } = req.params;
+    const tutorial = await Tutorial.findById(tutorial_id);
+    fs.unlink(
+      path.join(
+        path.dirname(__dirname),
+        "public",
+        "tutorials",
+        tutorial.attachment
+      ),
+      async (err) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        console.log("File deleted successfully");
+        const deleteTuto = await Tutorial.findByIdAndDelete(tutorial_id);
+        if (!deleteTuto) {
+          res.status(500).send({ messageError: "Tutorial doesn't deleted" });
+        } else {
+          res.status(200).send({ messageSuccess: "Tutorial deleted" });
+        }
+      }
+    );
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createTutorial,
   getTutorials,
   getTutorial,
   getAttachment,
   getTutorialsByCourse,
+  deleteTutorial,
 };
