@@ -45,7 +45,14 @@ const getCourse = async (req, res) => {
     if (!course) {
       res.status(404).send({ messageError: "Course not found" });
     } else {
-      res.status(200).send(course);
+      const tutorials = await Tutorial.find({ course_id: course._id });
+      if (tutorials.length > 0) {
+        let tutorialsCourse = [];
+        for (let i = 0; i < tutorials.length; i++) {
+          tutorialsCourse.push(tutorials[i]);
+        }
+        res.status(200).send({ course, tutorials: tutorialsCourse });
+      }
     }
   } catch (error) {
     res.status(500).send(error.message);
