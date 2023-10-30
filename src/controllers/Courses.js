@@ -1,4 +1,6 @@
 const { Course, Tutorial } = require("../models");
+const path = require("path");
+const fs = require("fs");
 
 // create course
 const createCourse = async (req, res) => {
@@ -44,8 +46,38 @@ const getCourse = async (req, res) => {
     if (!course) {
       res.status(404).send({ messageError: "Course not found" });
     } else {
-      res.status(200).send(course);
+      const tutorials = await Tutorial.find({ course_id: course._id });
+      if (tutorials.length > 0) {
+        let tutorialsCourse = [];
+        for (let i = 0; i < tutorials.length; i++) {
+          tutorialsCourse.push(tutorials[i]);
+        }
+        res.status(200).send({ course, tutorials: tutorialsCourse });
+      }
     }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
+// get course's image
+const getImage = async (req, res) => {
+  try {
+    await Course.findOne({ image_course: req.params.image_name })
+      .exec()
+      .then((result) => {
+        res
+          .status(200)
+          .sendFile(
+            path.join(
+              path.dirname(__dirname),
+              "public",
+              "images",
+              "courses",
+              result.image_course
+            )
+          );
+      });
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -67,19 +99,107 @@ const getCourses = async (req, res) => {
 };
 
 // update course
-const updateCourse = async (req, res) => {};
+const editCourse = async (req, res) => {
+  try {
+    const path = "src\\public\\images\\courses\\";
+    const { course_id } = req.params;
+    const course = await Course.findById(course_id);
+    if (course) {
+      if (req.file.filename) {
+        fs.unlink(`${path}${course.image_course}`, (err) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log("Image deleted successfully!");
+          }
+        });
+      }
+
+      const newData = {
+        title: req.body.title,
+        start_date: req.body.start_date,
+        duration: req.body.duration,
+        description: req.body.description,
+        country_id: req.body.country_id,
+        title: req.body.title,
+        image_course: req.file.filename,
+      };
+
+      const courseExists = await Course.find({
+        title: req.body.title,
+      });
+
+      if (courseExists.length > 0) {
+        res
+          .status(400)
+          .send({ messageError: "This title is already exists", courseExists });
+      } else {
+        await Course.findByIdAndUpdate(course_id, newData).then((result) => {
+          if (result) {
+            res.status(200).send({
+              messageSuccess: "Course updated successfully!",
+              result,
+            });
+          } else {
+            res.status(400).send({ messageSuccess: "Course doesn't updated!" });
+          }
+        });
+      }
+    } else {
+      res.status(404).send({ messageError: "Cours doesn't found" });
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
 
 // delete course
 const deleteCourse = async (req, res) => {
   try {
     const { course_id } = req.params;
-    // delete all tutorials related with this course
-    const tutorials = await Tutorial.deleteMany({ course_id });
+    // delete attachments of tutorials
+    const tutorials = await Tutorial.find({ course_id });
 
-    if (tutorials) {
+    for (i = 0; i < tutorials.length; i++) {
+      fs.unlink(
+        path.join(
+          path.dirname(__dirname),
+          "public",
+          "tutorials",
+          tutorials[i].attachment
+        ),
+        (err) => {
+          if (err) {
+            console.log(err);
+            return;
+          }
+        }
+      );
+    }
+    // delete all tutorials related with this course
+    const deletedTutorials = await Tutorial.deleteMany({ course_id });
+
+    if (deletedTutorials) {
       const course = await Course.findByIdAndDelete(course_id);
       if (course) {
-        res.status(200).send({ messageSuccess: "Course deleted successfully" });
+        fs.unlink(
+          path.join(
+            path.dirname(__dirname),
+            "public",
+            "images",
+            "courses",
+            course.image_course
+          ),
+          (err) => {
+            if (err) {
+              console.log(err);
+              return;
+            }
+            res
+              .status(200)
+              .send({ messageSuccess: "Course deleted successfully" });
+          }
+        );
       }
     } else {
       res.status(400).send({ messageError: "Tutorials did not deleted" });
@@ -89,14 +209,11 @@ const deleteCourse = async (req, res) => {
   }
 };
 
-// get course by tutorial
-const getCourseByTutorial = async (req, res) => {};
-
 module.exports = {
   createCourse,
   getCourse,
+  getImage,
   getCourses,
-  updateCourse,
+  editCourse,
   deleteCourse,
-  getCourseByTutorial,
 };

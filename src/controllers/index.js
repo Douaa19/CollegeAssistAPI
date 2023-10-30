@@ -2,6 +2,7 @@ const User = require("./Users");
 const Manager = require("./Mnagers");
 const Course = require("./Courses");
 const Country = require("./Countries");
+const Tutorial = require("./Tutorials");
 
 const fs = require("fs");
 const path = require("path");
@@ -22,7 +23,7 @@ const storage = (pathName) => {
 // filter
 const fFilter = (req, file, cb) => {
   // allowed ext
-  const filetypes = /jpeg|jpg|png|svg/;
+  const filetypes = /jpeg|jpg|png|svg|pdf|mp4/;
 
   // check ext
   const extname = filetypes.test(
@@ -53,11 +54,18 @@ const uploadImageCourse = multer({
   ),
 });
 
+const uploadFilesTutorials = multer({
+  fileFilter: fFilter,
+  storage: storage(path.join(path.dirname(__dirname), "public", "tutorials")),
+});
+
 module.exports = {
   uploadImage,
   uploadImageCourse,
+  uploadFilesTutorials,
   User,
   Manager,
   Course,
   Country,
+  Tutorial,
 };

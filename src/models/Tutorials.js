@@ -3,13 +3,17 @@ const mongoose = require("mongoose");
 // Tutorials schema
 const Tutorials = new mongoose.Schema(
   {
-    name: {
+    title: {
       type: String,
       required: true,
     },
     course_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Course",
+      required: true,
+    },
+    attachment: {
+      type: String,
       required: true,
     },
   },

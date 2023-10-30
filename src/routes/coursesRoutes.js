@@ -19,6 +19,9 @@ router
 // get course
 router.route("/get-course/:course_id").get(Course.getCourse);
 
+// get course's image
+router.route("/image/:image_name").get(Course.getImage);
+
 // get courses
 router.route("/").get(Course.getCourses);
 
@@ -29,6 +32,17 @@ router
     authorization,
     authorizationRole("super-admin", "manager"),
     Course.deleteCourse
+  );
+
+// edit course
+// delete course
+router
+  .route("/edit-course/:course_id")
+  .post(
+    authorization,
+    authorizationRole("super-admin", "manager"),
+    uploadImageCourse.single("image_course"),
+    Course.editCourse
   );
 
 module.exports = router;
