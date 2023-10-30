@@ -34,4 +34,15 @@ router
     Course.deleteCourse
   );
 
+// edit course
+// delete course
+router
+  .route("/edit-course/:course_id")
+  .post(
+    authorization,
+    authorizationRole("super-admin", "manager"),
+    uploadImageCourse.single("image_course"),
+    Course.editCourse
+  );
+
 module.exports = router;

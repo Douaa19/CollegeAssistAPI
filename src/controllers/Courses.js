@@ -99,7 +99,59 @@ const getCourses = async (req, res) => {
 };
 
 // update course
-const updateCourse = async (req, res) => {};
+const editCourse = async (req, res) => {
+  try {
+    const path = "src\\public\\images\\courses\\";
+    const { course_id } = req.params;
+    const course = await Course.findById(course_id);
+    if (course) {
+      if (req.file.filename) {
+        fs.unlink(`${path}${course.image_course}`, (err) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log("Image deleted successfully!");
+          }
+        });
+      }
+
+      const newData = {
+        title: req.body.title,
+        start_date: req.body.start_date,
+        duration: req.body.duration,
+        description: req.body.description,
+        country_id: req.body.country_id,
+        title: req.body.title,
+        image_course: req.file.filename,
+      };
+
+      const courseExists = await Course.find({
+        title: req.body.title,
+      });
+
+      if (courseExists.length > 0) {
+        res
+          .status(400)
+          .send({ messageError: "This title is already exists", courseExists });
+      } else {
+        await Course.findByIdAndUpdate(course_id, newData).then((result) => {
+          if (result) {
+            res.status(200).send({
+              messageSuccess: "Course updated successfully!",
+              result,
+            });
+          } else {
+            res.status(400).send({ messageSuccess: "Course doesn't updated!" });
+          }
+        });
+      }
+    } else {
+      res.status(404).send({ messageError: "Cours doesn't found" });
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
 
 // delete course
 const deleteCourse = async (req, res) => {
@@ -162,6 +214,6 @@ module.exports = {
   getCourse,
   getImage,
   getCourses,
-  updateCourse,
+  editCourse,
   deleteCourse,
 };
