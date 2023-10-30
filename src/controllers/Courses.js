@@ -1,5 +1,6 @@
 const { Course, Tutorial } = require("../models");
 const path = require("path");
+const fs = require("fs");
 
 // create course
 const createCourse = async (req, res) => {
@@ -104,13 +105,49 @@ const updateCourse = async (req, res) => {};
 const deleteCourse = async (req, res) => {
   try {
     const { course_id } = req.params;
-    // delete all tutorials related with this course
-    const tutorials = await Tutorial.deleteMany({ course_id });
+    // delete attachments of tutorials
+    const tutorials = await Tutorial.find({ course_id });
 
-    if (tutorials) {
+    for (i = 0; i < tutorials.length; i++) {
+      fs.unlink(
+        path.join(
+          path.dirname(__dirname),
+          "public",
+          "tutorials",
+          tutorials[i].attachment
+        ),
+        (err) => {
+          if (err) {
+            console.log(err);
+            return;
+          }
+        }
+      );
+    }
+    // delete all tutorials related with this course
+    const deletedTutorials = await Tutorial.deleteMany({ course_id });
+
+    if (deletedTutorials) {
       const course = await Course.findByIdAndDelete(course_id);
       if (course) {
-        res.status(200).send({ messageSuccess: "Course deleted successfully" });
+        fs.unlink(
+          path.join(
+            path.dirname(__dirname),
+            "public",
+            "images",
+            "courses",
+            course.image_course
+          ),
+          (err) => {
+            if (err) {
+              console.log(err);
+              return;
+            }
+            res
+              .status(200)
+              .send({ messageSuccess: "Course deleted successfully" });
+          }
+        );
       }
     } else {
       res.status(400).send({ messageError: "Tutorials did not deleted" });
@@ -120,9 +157,6 @@ const deleteCourse = async (req, res) => {
   }
 };
 
-// get course by tutorial
-const getCourseByTutorial = async (req, res) => {};
-
 module.exports = {
   createCourse,
   getCourse,
@@ -130,5 +164,4 @@ module.exports = {
   getCourses,
   updateCourse,
   deleteCourse,
-  getCourseByTutorial,
 };
