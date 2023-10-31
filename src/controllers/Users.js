@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 const mailer = require("nodemailer");
 const uuid = require("node-uuid");
 const cron = require("node-cron");
-const { Manager } = require(".");
 
 const register = async (req, res) => {
   try {
