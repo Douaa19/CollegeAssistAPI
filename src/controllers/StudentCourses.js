@@ -20,6 +20,20 @@ const addCourse = async (req, res) => {
   }
 };
 
+const getMyCourses = async (req, res) => {
+  try {
+    const myCourses = await StudentsCourses.find({
+      student_id: req.user.id,
+    }).populate("course_id");
+    if (myCourses) {
+      res.status(200).send(myCourses);
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   addCourse,
+  getMyCourses,
 };

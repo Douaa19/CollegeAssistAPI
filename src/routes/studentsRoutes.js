@@ -15,4 +15,7 @@ router
   .route("/add-course/:course_id")
   .post(authorization, StudentCourse.addCourse);
 
+// get my courses
+router.route("/my-courses").get(authorization, StudentCourse.getMyCourses);
+
 module.exports = router;
