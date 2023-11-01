@@ -615,10 +615,25 @@ cron.schedule("0 0 * * *", async () => {
   }
 });
 
+// get profile
+const getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (user) {
+      res.status(200).send(user);
+    } else {
+      res.status(404).send({ messageError: "User not found!" });
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   register,
   login,
   forgetPassword,
   resetPassword,
   assingStudentsToManagers,
+  getProfile,
 };

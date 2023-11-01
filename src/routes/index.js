@@ -14,7 +14,7 @@ app.get("/api", (req, res) => {
   });
 });
 
-app.use("/api/auth", auth);
+app.use("/api", auth);
 app.use("/api/manager", manager);
 app.use("/api/student", student);
 app.use("/api/course", course);
