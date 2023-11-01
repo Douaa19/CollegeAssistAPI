@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const mailer = require("nodemailer");
 const uuid = require("node-uuid");
 const cron = require("node-cron");
+const path = require("path");
 
 const register = async (req, res) => {
   try {
@@ -629,6 +630,29 @@ const getProfile = async (req, res) => {
   }
 };
 
+// get user's image
+const getImage = async (req, res) => {
+  try {
+    await User.findOne({ profile_img: req.params.profile_image })
+      .exec()
+      .then((result) => {
+        res
+          .status(200)
+          .sendFile(
+            path.join(
+              path.dirname(__dirname),
+              "public",
+              "images",
+              "profile",
+              result.profile_img
+            )
+          );
+      });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   register,
   login,
@@ -636,4 +660,5 @@ module.exports = {
   resetPassword,
   assingStudentsToManagers,
   getProfile,
+  getImage,
 };

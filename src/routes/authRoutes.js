@@ -24,4 +24,9 @@ router.route("/auth/reset_password/:user_id").post(User.resetPassword);
 // get profile
 router.route("/user-profile").get(authorization, User.getProfile);
 
+// get user's image
+router
+  .route("/user/profile-image/:profile_image")
+  .get(authorization, User.getImage);
+
 module.exports = router;
