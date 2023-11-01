@@ -66,9 +66,31 @@ const getCourseRequest = async (req, res) => {
   }
 };
 
+// accept pending course request
+const acceptCourseRequest = async (req, res) => {
+  try {
+    const courseRequest = await StudentsCourses.findById(
+      req.params.id
+    ).populate("course_id student_id");
+    if (courseRequest && courseRequest.status === "pending") {
+      courseRequest.status = "accepted";
+      courseRequest.save();
+      res
+        .status(200)
+        .send({ messageSuccess: "Request accepted", course: courseRequest });
+    } else {
+      res.status(404).send({ messageError: "Request doesn't found" });
+    }
+  } catch (error) {
+    res;
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   getPendingStudents,
   acceptStudent,
   getMyStudents,
   getCourseRequest,
+  acceptCourseRequest,
 };

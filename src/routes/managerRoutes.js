@@ -35,4 +35,13 @@ router
   .route("/courses-requests")
   .get(authorization, authorizationRole("manager"), Manager.getCourseRequest);
 
+// accept course requests
+router
+  .route("/accept-course-request/:id")
+  .post(
+    authorization,
+    authorizationRole("manager"),
+    Manager.acceptCourseRequest
+  );
+
 module.exports = router;
