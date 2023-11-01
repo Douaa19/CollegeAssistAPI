@@ -30,4 +30,9 @@ router
   .route("/my-students")
   .get(authorization, authorizationRole("manager"), Manager.getMyStudents);
 
+// get course's requests
+router
+  .route("/courses-requests")
+  .get(authorization, authorizationRole("manager"), Manager.getCourseRequest);
+
 module.exports = router;

@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User, StudentsCourses } = require("../models");
 
 // get pending students
 const getPendingStudents = async (req, res) => {
@@ -50,8 +50,25 @@ const getMyStudents = async (req, res) => {
   }
 };
 
+// accept course request
+const getCourseRequest = async (req, res) => {
+  try {
+    const pendingRequests = await StudentsCourses.find({
+      status: "pending",
+    }).populate("course_id student_id");
+    if (pendingRequests.length > 0) {
+      res.status(200).send(pendingRequests);
+    } else {
+      res.status(404).send({ messageError: "There are no pending requests!" });
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   getPendingStudents,
   acceptStudent,
   getMyStudents,
+  getCourseRequest,
 };
