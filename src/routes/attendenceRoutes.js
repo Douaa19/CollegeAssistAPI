@@ -12,4 +12,13 @@ router
   .route("/add-attendence")
   .post(authorization, authorizationRole("manager"), Attendence.addAttendece);
 
+// get scores
+router
+  .route("/scors/:course_id")
+  .get(
+    authorization,
+    authorizationRole("manager"),
+    Attendence.getStudentsScore
+  );
+
 module.exports = router;

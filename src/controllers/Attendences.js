@@ -40,6 +40,51 @@ const addAttendece = async (req, res) => {
   }
 };
 
+const getStudentsScore = async (req, res) => {
+  try {
+    const { course_id } = req.params;
+    const attendences = await Attendence.find({ course_id }).populate(
+      "student_id"
+    );
+    if (attendences.length > 0) {
+      const scoreMap = {};
+
+      attendences.forEach((attendence) => {
+        const student_id = attendence.student_id;
+        const status = attendence.status;
+
+        if (!scoreMap[student_id._id]) {
+          scoreMap[student_id._id] = {
+            score: 0,
+            firstName: student_id.fullName,
+            lastName: student_id.lastName,
+            email: student_id.email,
+          };
+        }
+
+        if (status === "present") {
+          scoreMap[student_id._id].score++;
+        }
+
+        // if (status === "present") {
+        //   scoreMap[student_id._id].present++;
+        // } else if (status === "absent") {
+        //   scoreMap[student_id._id].absent++;
+        // }
+      });
+
+      res.status(200).send(scoreMap);
+    } else {
+      res
+        .status(404)
+        .json({ message: "No attendances found for this course." });
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   addAttendece,
+  getStudentsScore,
 };
