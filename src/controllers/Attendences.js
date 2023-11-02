@@ -15,12 +15,7 @@ const addAttendece = async (req, res) => {
       student_id: attendence.student_id,
       course_id: attendence.course_id,
     });
-    if (
-      attendenceExists &&
-      date == attendenceExists.date 
-    //   &&
-    //   attendence.status !== attendenceExists.status
-    ) {
+    if (attendenceExists && date == attendenceExists.date) {
       console.log(attendenceExists);
       attendenceExists.status = req.body.status;
       attendenceExists.save();

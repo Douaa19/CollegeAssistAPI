@@ -5,7 +5,7 @@ const router = express.Router();
 const { authorization, authorizationRole } = require("../middlewares");
 
 // controllers
-const { Course, uploadImageCourse } = require("../controllers");
+const { Course, uploadImageCourse, StudentCourse } = require("../controllers");
 
 router
   .route("/create-course")
@@ -35,7 +35,6 @@ router
   );
 
 // edit course
-// delete course
 router
   .route("/edit-course/:course_id")
   .post(
@@ -43,6 +42,15 @@ router
     authorizationRole("super-admin", "manager"),
     uploadImageCourse.single("image_course"),
     Course.editCourse
+  );
+
+// get students of one course
+router
+  .route("/course-students/:course_id")
+  .get(
+    authorization,
+    authorizationRole("manager", "super-admin"),
+    StudentCourse.getStudentsOfCourse
   );
 
 module.exports = router;
