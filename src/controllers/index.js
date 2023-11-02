@@ -3,6 +3,8 @@ const Manager = require("./Mnagers");
 const Course = require("./Courses");
 const Country = require("./Countries");
 const Tutorial = require("./Tutorials");
+const StudentCourse = require("./StudentCourses");
+const Attendence = require("./Attendences");
 
 const fs = require("fs");
 const path = require("path");
@@ -68,4 +70,6 @@ module.exports = {
   Course,
   Country,
   Tutorial,
+  StudentCourse,
+  Attendence,
 };

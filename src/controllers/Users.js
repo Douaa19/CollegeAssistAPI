@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const mailer = require("nodemailer");
 const uuid = require("node-uuid");
 const cron = require("node-cron");
-const { Manager } = require(".");
+const path = require("path");
 
 const register = async (req, res) => {
   try {
@@ -616,10 +616,49 @@ cron.schedule("0 0 * * *", async () => {
   }
 });
 
+// get profile
+const getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (user) {
+      res.status(200).send(user);
+    } else {
+      res.status(404).send({ messageError: "User not found!" });
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
+// get user's image
+const getImage = async (req, res) => {
+  try {
+    await User.findOne({ profile_img: req.params.profile_image })
+      .exec()
+      .then((result) => {
+        res
+          .status(200)
+          .sendFile(
+            path.join(
+              path.dirname(__dirname),
+              "public",
+              "images",
+              "profile",
+              result.profile_img
+            )
+          );
+      });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   register,
   login,
   forgetPassword,
   resetPassword,
   assingStudentsToManagers,
+  getProfile,
+  getImage,
 };
