@@ -18,4 +18,13 @@ router
 // get my courses
 router.route("/my-courses").get(authorization, StudentCourse.getMyCourses);
 
+// get additional courses
+router
+  .route("/additional-courses")
+  .get(
+    authorization,
+    authorizationRole("student"),
+    StudentCourse.getAdditionalCourses
+  );
+
 module.exports = router;
