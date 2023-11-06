@@ -41,4 +41,12 @@ router
     Documents.editDocument
   );
 
+router
+  .route("/delete-document/:document_id")
+  .get(
+    authorization,
+    authorizationRole("manager", "student"),
+    Documents.deleteDocument
+  );
+
 module.exports = router;

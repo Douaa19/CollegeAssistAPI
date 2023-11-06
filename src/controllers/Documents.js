@@ -1,6 +1,5 @@
 const { Document, Course, StudentsCourses, User } = require("../models");
 const fs = require("fs");
-const path = require("path");
 
 const addDocument = async (req, res) => {
   try {
@@ -98,9 +97,32 @@ const editDocument = async (req, res) => {
   }
 };
 
+const deleteDocument = async (req, res) => {
+  try {
+    const path = "src\\public\\courses\\documents\\";
+    const { document_id } = req.params;
+    const document = await Document.findByIdAndDelete(document_id);
+    if (document) {
+      fs.unlink(`${path}${document.name}`, (err) => {
+        if (err) {
+          res.status(500).send(err);
+        } else {
+          res.status(200).send({
+            messageSuccess: "Document deletes successfully",
+            document,
+          });
+        }
+      });
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   addDocument,
   getDocuments,
   getFile,
   editDocument,
+  deleteDocument,
 };
