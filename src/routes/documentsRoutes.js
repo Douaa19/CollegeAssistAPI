@@ -34,7 +34,7 @@ router
 
 router
   .route("/edit-document/:document_id")
-  .get(
+  .post(
     authorization,
     authorizationRole("manager", "student"),
     uploadDocuments.single("document"),
@@ -43,7 +43,7 @@ router
 
 router
   .route("/delete-document/:document_id")
-  .get(
+  .post(
     authorization,
     authorizationRole("manager", "student"),
     Documents.deleteDocument
@@ -51,11 +51,19 @@ router
 
 router
   .route("/edit-document-status/:document_id")
-  .get(
+  .post(
     authorization,
     authorizationRole("manager"),
     uploadDocuments.single("document"),
     Documents.editDocumentStatus
+  );
+
+router
+  .route("/documents/:student_id")
+  .get(
+    authorization,
+    authorizationRole("manager"),
+    Documents.getDocumentsByStudent
   );
 
 module.exports = router;

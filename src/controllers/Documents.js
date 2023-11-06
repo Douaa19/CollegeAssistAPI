@@ -141,6 +141,27 @@ const editDocumentStatus = async (req, res) => {
   }
 };
 
+const getDocumentsByStudent = async (req, res) => {
+  try {
+    const { student_id } = req.params;
+    const studentCourses = await StudentsCourses.find({ student_id });
+
+    if (studentCourses.length > 0) {
+      const courseIds = studentCourses.map(
+        (studentCourse) => studentCourse.course_id
+      );
+
+      const documents = await Document.find({ course_id: { $in: courseIds } });
+
+      res.status(200).send(documents);
+    } else {
+      res.status(404).send({ messageError: "Course doesn't found!" });
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   addDocument,
   getDocuments,
@@ -148,4 +169,5 @@ module.exports = {
   editDocument,
   deleteDocument,
   editDocumentStatus,
+  getDocumentsByStudent,
 };
