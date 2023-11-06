@@ -11,6 +11,12 @@ const Documents = new mongoose.Schema(
       type: String,
       default: "pending",
     },
+    course_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Course",
+      required: false,
+      default: null,
+    },
   },
   {
     timestamps: true,
