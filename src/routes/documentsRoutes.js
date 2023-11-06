@@ -16,4 +16,12 @@ router
     Documents.addDocument
   );
 
+router
+  .route("/:course_id")
+  .get(
+    authorization,
+    authorizationRole("manager", "student"),
+    Documents.getDocuments
+  );
+
 module.exports = router;

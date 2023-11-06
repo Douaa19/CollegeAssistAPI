@@ -17,7 +17,22 @@ const addDocument = async (req, res) => {
     } else {
       res.status(400).send({ messageError: "New document doesn't insert" });
     }
-    console.log(newDocument, name);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
+const getDocuments = async (req, res) => {
+  try {
+    const { course_id } = req.params;
+    const documents = await Document.find({ course_id });
+    if (documents.length > 0) {
+      res.status(200).send(documents);
+    } else {
+      res
+        .status(400)
+        .send({ messageError: "This course doesn't have any documents" });
+    }
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -25,4 +40,5 @@ const addDocument = async (req, res) => {
 
 module.exports = {
   addDocument,
+  getDocuments,
 };
