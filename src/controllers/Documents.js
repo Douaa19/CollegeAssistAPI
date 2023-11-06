@@ -1,4 +1,6 @@
 const { Document, Course, StudentsCourses, User } = require("../models");
+const fs = require("fs");
+const path = require("path");
 
 const addDocument = async (req, res) => {
   try {
@@ -38,7 +40,30 @@ const getDocuments = async (req, res) => {
   }
 };
 
+const getFile = async (req, res) => {
+  try {
+    await Document.findOne({ name: req.params.filename })
+      .exec()
+      .then((result) => {
+        res
+          .status(200)
+          .sendFile(
+            path.join(
+              path.dirname(__dirname),
+              "public",
+              "courses",
+              "documents",
+              result.name
+            )
+          );
+      });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   addDocument,
   getDocuments,
+  getFile,
 };

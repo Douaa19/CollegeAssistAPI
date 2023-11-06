@@ -24,4 +24,12 @@ router
     Documents.getDocuments
   );
 
+router
+  .route("/file/:filename")
+  .get(
+    authorization,
+    authorizationRole("manager", "student"),
+    Documents.getFile
+  );
+
 module.exports = router;
