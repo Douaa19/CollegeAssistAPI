@@ -44,7 +44,7 @@ const getStudentsScore = async (req, res) => {
   try {
     const { course_id } = req.params;
     const attendences = await Attendence.find({ course_id }).populate(
-      "student_id"
+      "student_id course_id"
     );
     if (attendences.length > 0) {
       const scoreMap = {};
@@ -73,7 +73,7 @@ const getStudentsScore = async (req, res) => {
         // }
       });
 
-      res.status(200).send(scoreMap);
+      res.status(200).send({ scoreMap, attendences });
     } else {
       res
         .status(404)

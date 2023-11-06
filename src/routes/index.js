@@ -8,6 +8,7 @@ const course = require("./coursesRoutes");
 const country = require("./countriesRoutes");
 const tutorial = require("./tutorialsRoutes");
 const attendence = require("./attendenceRoutes");
+const document = require("./documentsRoutes");
 
 app.get("/api", (req, res) => {
   res.json({
@@ -22,5 +23,6 @@ app.use("/api/course", course);
 app.use("/api/country", country);
 app.use("/api/tutorial", tutorial);
 app.use("/api/attendence", attendence);
+app.use("/api/document", document);
 
 module.exports = app;

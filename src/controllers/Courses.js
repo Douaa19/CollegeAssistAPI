@@ -141,7 +141,7 @@ const editCourse = async (req, res) => {
               result,
             });
           } else {
-            res.status(400).send({ messageSuccess: "Course doesn't updated!" });
+            res.status(400).send({ messageError: "Course doesn't updated!" });
           }
         });
       }

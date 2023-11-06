@@ -1,4 +1,4 @@
-const { User, StudentsCourses } = require("../models");
+const { User, StudentsCourses, Course } = require("../models");
 
 const addCourse = async (req, res) => {
   try {
@@ -47,8 +47,37 @@ const getStudentsOfCourse = async (req, res) => {
   }
 };
 
+const getAdditionalCourses = async (req, res) => {
+  try {
+    const myCourses = await StudentsCourses.find({ student_id: req.user.id });
+    if (myCourses.length > 0) {
+      const myCourseIds = myCourses.map((myCourse) => myCourse.course_id);
+
+      const additionalCourses = await Course.find({
+        _id: { $nin: myCourseIds },
+      });
+
+      res.status(200).send(additionalCourses);
+    } else {
+      const courses = await Course.find();
+      if (courses.lenght > 0) res.status(200).send(courses);
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
+const createAdditionaleCourse = async (req, res) => {
+  try {
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   addCourse,
   getMyCourses,
   getStudentsOfCourse,
+  getAdditionalCourses,
+  createAdditionaleCourse,
 };

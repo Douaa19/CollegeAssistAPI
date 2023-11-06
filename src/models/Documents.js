@@ -9,7 +9,13 @@ const Documents = new mongoose.Schema(
     },
     status: {
       type: String,
-      default: "pending",
+      default: "missing",
+    },
+    course_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Course",
+      required: false,
+      default: null,
     },
   },
   {

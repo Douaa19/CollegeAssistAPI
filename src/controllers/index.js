@@ -5,6 +5,7 @@ const Country = require("./Countries");
 const Tutorial = require("./Tutorials");
 const StudentCourse = require("./StudentCourses");
 const Attendence = require("./Attendences");
+const Documents = require("./Documents");
 
 const fs = require("fs");
 const path = require("path");
@@ -61,10 +62,18 @@ const uploadFilesTutorials = multer({
   storage: storage(path.join(path.dirname(__dirname), "public", "tutorials")),
 });
 
+const uploadDocuments = multer({
+  fileFilter: fFilter,
+  storage: storage(
+    path.join(path.dirname(__dirname), "public", "courses", "documents")
+  ),
+});
+
 module.exports = {
   uploadImage,
   uploadImageCourse,
   uploadFilesTutorials,
+  uploadDocuments,
   User,
   Manager,
   Course,
@@ -72,4 +81,5 @@ module.exports = {
   Tutorial,
   StudentCourse,
   Attendence,
+  Documents,
 };
