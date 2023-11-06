@@ -4,7 +4,7 @@ const fs = require("fs");
 const addDocument = async (req, res) => {
   try {
     const data = {
-      status: "pending",
+      status: "missing",
       course_id: req.body.course_id,
     };
     const name = req.file.filename;
@@ -119,10 +119,33 @@ const deleteDocument = async (req, res) => {
   }
 };
 
+const editDocumentStatus = async (req, res) => {
+  try {
+    const { document_id } = req.params;
+    const document = await Document.findById(document_id);
+    if (document) {
+      document.status = req.body.status;
+      document.save();
+
+      res.status(200).send({
+        messageSuccess: "Document's status updated successfully!",
+        document,
+      });
+    } else {
+      res
+        .status(400)
+        .send({ messageError: "Document status doesn't updated!" });
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   addDocument,
   getDocuments,
   getFile,
   editDocument,
   deleteDocument,
+  editDocumentStatus,
 };

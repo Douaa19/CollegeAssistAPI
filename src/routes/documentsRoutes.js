@@ -49,4 +49,13 @@ router
     Documents.deleteDocument
   );
 
+router
+  .route("/edit-document-status/:document_id")
+  .get(
+    authorization,
+    authorizationRole("manager"),
+    uploadDocuments.single("document"),
+    Documents.editDocumentStatus
+  );
+
 module.exports = router;
