@@ -5,6 +5,7 @@ const Country = require("./Countries");
 const Attendence = require("./Attendences");
 const Payment = require("./Payments");
 const Tutorial = require("./Tutorials");
+const Document = require("./Documents");
 
 module.exports = {
   User,
@@ -14,4 +15,5 @@ module.exports = {
   Attendence,
   Payment,
   Tutorial,
+  Document,
 };
