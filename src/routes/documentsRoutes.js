@@ -32,4 +32,13 @@ router
     Documents.getFile
   );
 
+router
+  .route("/edit-document/:document_id")
+  .get(
+    authorization,
+    authorizationRole("manager", "student"),
+    uploadDocuments.single("document"),
+    Documents.editDocument
+  );
+
 module.exports = router;

@@ -62,8 +62,45 @@ const getFile = async (req, res) => {
   }
 };
 
+const editDocument = async (req, res) => {
+  try {
+    const path = "src\\public\\courses\\documents\\";
+    const { document_id } = req.params;
+    const document = await Document.findById(document_id);
+    if (document) {
+      if (req.file.filename) {
+        fs.unlink(`${path}${document.name}`, (err) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log("File delted successfully");
+          }
+        });
+      }
+
+      const name = req.file.filename;
+
+      await Document.findByIdAndUpdate(document_id, {
+        name: name,
+      }).then((result) => {
+        if (result) {
+          res.status(200).send({
+            messageSuccess: "Document updated successfully!",
+            result,
+          });
+        } else {
+          res.status(400).send({ messageError: "Document doesn't updated!" });
+        }
+      });
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   addDocument,
   getDocuments,
   getFile,
+  editDocument,
 };
