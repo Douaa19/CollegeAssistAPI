@@ -33,6 +33,10 @@ const Courses = new mongoose.Schema(
       required: false,
       default: null,
     },
+    price: {
+      type: String,
+      default: 0,
+    },
   },
   {
     timestamps: true,
