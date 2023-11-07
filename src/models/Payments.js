@@ -14,11 +14,11 @@ const Payments = new mongoose.Schema(
       required: true,
     },
     given_price: {
-      type: String,
+      type: Number,
       required: true,
     },
     status: {
-      type: String,
+      type: Number,
       required: true,
     },
   },

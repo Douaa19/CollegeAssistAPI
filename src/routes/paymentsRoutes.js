@@ -12,4 +12,9 @@ router
   .route("/status")
   .get(authorization, authorizationRole("student"), Payments.getPaymentStatus);
 
+// edit payment
+router
+  .route("/edit/:student_id")
+  .post(authorization, authorizationRole("manager"), Payments.editPayment);
+
 module.exports = router;
