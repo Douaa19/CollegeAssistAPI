@@ -39,7 +39,24 @@ const editPayment = async (req, res) => {
   }
 };
 
+const getPaymentOfStudent = async (req, res) => {
+  try {
+    const { student_id } = req.params;
+    const payment = await Payment.findOne({ student_id }).populate(
+      "student_id course_id",
+      "_id title price"
+    );
+
+    if (payment) {
+      res.status(200).send(payment);
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   getPaymentStatus,
   editPayment,
+  getPaymentOfStudent,
 };

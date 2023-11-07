@@ -17,4 +17,13 @@ router
   .route("/edit/:payment_id")
   .post(authorization, authorizationRole("manager"), Payments.editPayment);
 
+// get payment of student
+router
+  .route("/:student_id")
+  .get(
+    authorization,
+    authorizationRole("manager"),
+    Payments.getPaymentOfStudent
+  );
+
 module.exports = router;
