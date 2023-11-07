@@ -34,7 +34,7 @@ const Courses = new mongoose.Schema(
       default: null,
     },
     price: {
-      type: String,
+      type: Number,
       default: 0,
     },
   },
