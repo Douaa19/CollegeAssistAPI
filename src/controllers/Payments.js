@@ -8,10 +8,7 @@ const getPaymentStatus = async (req, res) => {
     );
 
     if (payment) {
-      const percentage = (payment.given_price / payment.course_id.price) * 100;
-      payment.status = `${Math.round(percentage)}%`;
-      payment.save();
-      res.status(200).send(payment.status);
+      res.status(200).send(payment);
     }
   } catch (error) {
     res.status(500).send(error.message);
@@ -27,7 +24,6 @@ const editPayment = async (req, res) => {
     if (payment) {
       payment.given_price += parseInt(req.body.price);
       payment.status = (payment.given_price / payment.course_id.price) * 100;
-      console.log(payment.status, payment.given_price);
       payment.save();
 
       res
