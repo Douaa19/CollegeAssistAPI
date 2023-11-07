@@ -1,4 +1,4 @@
-const { User, StudentsCourses } = require("../models");
+const { User, StudentsCourses, Payment } = require("../models");
 
 // get pending students
 const getPendingStudents = async (req, res) => {
@@ -75,9 +75,22 @@ const acceptCourseRequest = async (req, res) => {
     if (courseRequest && courseRequest.status === "pending") {
       courseRequest.status = "accepted";
       courseRequest.save();
-      res
-        .status(200)
-        .send({ messageSuccess: "Request accepted", course: courseRequest });
+
+      // create payment
+      const payment = await Payment.create({
+        course_id: courseRequest.course_id._id,
+        student_id: courseRequest.student_id._id,
+        status: 0,
+      });
+      if (payment) {
+        console.log("Payment created");
+      } else {
+        console.log("Payment doesn't created");
+      }
+      res.status(200).send({
+        messageSuccess: "Request accepted.",
+        course: courseRequest,
+      });
     } else {
       res.status(404).send({ messageError: "Request doesn't found" });
     }
