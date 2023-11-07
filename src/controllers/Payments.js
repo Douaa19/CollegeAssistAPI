@@ -4,7 +4,8 @@ const getPaymentStatus = async (req, res) => {
   try {
     const student_id = req.user.id;
     const payment = await Payment.findOne({ student_id }).populate(
-      "student_id course_id"
+      "student_id course_id",
+      "_id title price"
     );
 
     if (payment) {
@@ -17,9 +18,10 @@ const getPaymentStatus = async (req, res) => {
 
 const editPayment = async (req, res) => {
   try {
-    const { student_id } = req.params;
-    const payment = await Payment.findOne({ student_id }).populate(
-      "student_id course_id"
+    const { payment_id } = req.params;
+    const payment = await Payment.findById(payment_id).populate(
+      "student_id course_id",
+      "_id title price firstName lastName"
     );
     if (payment) {
       payment.given_price += parseInt(req.body.price);
@@ -29,6 +31,8 @@ const editPayment = async (req, res) => {
       res
         .status(200)
         .send({ messageSuccess: "Givin price updated successfully!", payment });
+    } else {
+      res.status(400).send({ messageError: "Payment not found" });
     }
   } catch (error) {
     res.status(500).send(error.message);

@@ -14,7 +14,7 @@ router
 
 // edit payment
 router
-  .route("/edit/:student_id")
+  .route("/edit/:payment_id")
   .post(authorization, authorizationRole("manager"), Payments.editPayment);
 
 module.exports = router;
