@@ -13,6 +13,10 @@ const Payments = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    given_price: {
+      type: String,
+      required: true,
+    },
     status: {
       type: String,
       required: true,
