@@ -7,6 +7,7 @@ const StudentCourse = require("./StudentCourses");
 const Attendence = require("./Attendences");
 const Documents = require("./Documents");
 const Payments = require("./Payments");
+const Admin = require("./Admin");
 
 const fs = require("fs");
 const path = require("path");
@@ -84,4 +85,5 @@ module.exports = {
   Attendence,
   Documents,
   Payments,
+  Admin,
 };
