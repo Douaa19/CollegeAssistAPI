@@ -24,6 +24,21 @@ const createEmail = async (req, res) => {
   }
 };
 
+const getEmail = async (req, res) => {
+  try {
+    const { email_title } = req.params;
+    const email = await Email.findOne({ title: email_title });
+    if (email) {
+      res.status(200).send(email);
+    } else {
+      res.status(404).send({ messageError: "Email not found" });
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createEmail,
+  getEmail,
 };

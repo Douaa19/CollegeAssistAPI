@@ -12,4 +12,9 @@ router
   .route("/create")
   .post(authorization, authorizationRole("super-admin"), Email.createEmail);
 
+// get email
+router
+  .route("/:email_title")
+  .get(authorization, authorizationRole("super-admin"), Email.getEmail);
+
 module.exports = router;
