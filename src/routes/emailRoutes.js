@@ -5,8 +5,11 @@ const router = express.Router();
 const { authorization, authorizationRole } = require("../middlewares");
 
 // controllers
-const { Attendence } = require("../controllers");
+const { Email } = require("../controllers");
 
-
+// create email
+router
+  .route("/create")
+  .post(authorization, authorizationRole("super-admin"), Email.createEmail);
 
 module.exports = router;

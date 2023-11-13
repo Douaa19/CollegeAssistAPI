@@ -1,5 +1,9 @@
 const mongoose = require("mongoose");
 
+const content = (content) => {
+  return `${content}`;
+};
+
 // Emails schema
 const Emails = new mongoose.Schema(
   {
@@ -11,10 +15,7 @@ const Emails = new mongoose.Schema(
       type: String,
       required: true,
     },
-    content: {
-      type: String,
-      required: true,
-    },
+    content: {},
   },
   {
     timestamps: true,
