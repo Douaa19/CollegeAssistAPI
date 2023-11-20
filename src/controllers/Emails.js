@@ -38,7 +38,26 @@ const getEmail = async (req, res) => {
   }
 };
 
+const editEmail = async (req, res) => {
+  try {
+    const { email_id } = req.params;
+    const data = {
+      subject: req.body.subject,
+      content: req.body.content,
+    };
+    const email = await Email.findByIdAndUpdate(email_id, data);
+    if (email) {
+      res.status(200).send(email);
+    } else {
+      res.status(400).send({ messageError: "Email not found" });
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createEmail,
   getEmail,
+  editEmail,
 };

@@ -17,4 +17,9 @@ router
   .route("/:email_title")
   .get(authorization, authorizationRole("super-admin"), Email.getEmail);
 
+// edit email
+router
+  .route("/edit/:email_id")
+  .post(authorization, authorizationRole("super-admin"), Email.editEmail);
+
 module.exports = router;
