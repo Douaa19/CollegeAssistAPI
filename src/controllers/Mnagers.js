@@ -81,6 +81,7 @@ const acceptCourseRequest = async (req, res) => {
         course_id: courseRequest.course_id._id,
         student_id: courseRequest.student_id._id,
         status: 0,
+        given_price: 0,
       });
       if (payment) {
         console.log("Payment created");
@@ -95,7 +96,6 @@ const acceptCourseRequest = async (req, res) => {
       res.status(404).send({ messageError: "Request doesn't found" });
     }
   } catch (error) {
-    res;
     res.status(500).send(error.message);
   }
 };

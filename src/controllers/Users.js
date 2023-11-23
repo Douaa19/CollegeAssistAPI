@@ -73,15 +73,13 @@ const register = async (req, res) => {
 
       if (token) {
         if (newUser.role === "student") {
-          const emailContent = await Email.findOne({ title: "welcome" });
-          if (emailContent) {
+          const email = await Email.findOne({ title: "welcome" });
+          if (email) {
             const transporter = nodemailer.createTransport({
               host: "mail.smartpeddle.com",
-              // secureConnection: false,
               port: 587,
               tls: {
                 rejectUnauthorized: false,
-                //   ciphers: "SSLv3",
               },
               auth: {
                 user: "collegeassist@smartpeddle.com",
@@ -90,12 +88,9 @@ const register = async (req, res) => {
             });
             const mailOprtions = {
               from: '"College Assist" <collegeassist@smartpeddle.com>',
-              to: `${newUser.email}`,
-              subject: "Welcome",
-              html: `${welcomeEmail.welcomeEmail(
-                emailContent.content,
-                newUser
-              )}`,
+              to: newUser.email,
+              subject: email.subject,
+              html: welcomeEmail.welcomeEmail(email.content, newUser),
             };
             mailOprtions.headers = {
               "Content-Type": "text/html",
