@@ -67,17 +67,9 @@ const getAdditionalCourses = async (req, res) => {
   }
 };
 
-const createAdditionaleCourse = async (req, res) => {
-  try {
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-};
-
 module.exports = {
   addCourse,
   getMyCourses,
   getStudentsOfCourse,
   getAdditionalCourses,
-  createAdditionaleCourse,
 };
