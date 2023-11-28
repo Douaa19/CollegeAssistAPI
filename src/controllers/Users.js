@@ -40,7 +40,7 @@ const register = async (req, res) => {
       }
 
       const dateStr = new Date();
-      const lastAccess = moment.utc(dateStr).format("DD.MM.YYYY HH:mm");
+      const lastAccess = moment.utc(dateStr).format("DD/MM/YYYY HH:mm");
 
       const newUser = await User.create({
         firstName: user[0],
