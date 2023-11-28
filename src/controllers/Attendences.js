@@ -35,50 +35,53 @@ const addAttendece = async (req, res) => {
             date,
           });
           if (newAttendence) {
-            const studentCourse = await StudentsCourses.findOne({
-              student_id: attendence.student_id,
-              course_id: attendence.course_id,
-            }).populate(
-              "student_id course_id",
-              "firstName lastName email title"
-            );
-            const email = await Email.findOne({
-              title: "attendence and absence",
-            });
-            if (email && studentCourse) {
-              const transporter = nodemailer.createTransport({
-                host: "mail.smartpeddle.com",
-                port: 587,
-                tls: {
-                  rejectUnauthorized: false,
-                },
-                auth: {
-                  user: "collegeassist@smartpeddle.com",
-                  pass: "CollegeAssist23159.",
-                },
+            if (attendence.status !== "present") {
+              const studentCourse = await StudentsCourses.findOne({
+                student_id: attendence.student_id,
+                course_id: attendence.course_id,
+              }).populate(
+                "student_id course_id",
+                "firstName lastName email title"
+              );
+              const email = await Email.findOne({
+                title: "attendence and absence",
               });
-              const mailOprtions = {
-                from: '"College Assist" <collegeassist@smartpeddle.com>',
-                to: studentCourse.student_id.email,
-                subject: email.subject,
-                html: attendenceEmail.attendence(
-                  email.content,
-                  studentCourse.student_id,
-                  studentCourse.course_id,
-                  date
-                ),
-              };
-              mailOprtions.headers = {
-                "Content-Type": "text/html",
-              };
-              transporter.sendMail(mailOprtions, (error, info) => {
-                if (error) {
-                  res.send(error);
-                } else {
-                  res.status(200).send(newAttendence);
-                }
-              });
+              if (email && studentCourse) {
+                const transporter = nodemailer.createTransport({
+                  host: "mail.smartpeddle.com",
+                  port: 587,
+                  tls: {
+                    rejectUnauthorized: false,
+                  },
+                  auth: {
+                    user: "collegeassist@smartpeddle.com",
+                    pass: "CollegeAssist23159.",
+                  },
+                });
+                const mailOprtions = {
+                  from: '"College Assist" <collegeassist@smartpeddle.com>',
+                  to: studentCourse.student_id.email,
+                  subject: email.subject,
+                  html: attendenceEmail.attendence(
+                    email.content,
+                    studentCourse.student_id,
+                    studentCourse.course_id,
+                    date
+                  ),
+                };
+                mailOprtions.headers = {
+                  "Content-Type": "text/html",
+                };
+                transporter.sendMail(mailOprtions, (error, info) => {
+                  if (error) {
+                    res.send(error);
+                  } else {
+                    console.log("Email send!");
+                  }
+                });
+              }
             }
+            res.status(200).send(newAttendence);
           } else {
             res.status(400).send({ messageError: "Attendece doesn't created" });
           }
