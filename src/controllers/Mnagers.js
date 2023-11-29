@@ -1,4 +1,6 @@
-const { User, StudentsCourses, Payment } = require("../models");
+const { User, StudentsCourses, Payment, Email } = require("../models");
+const nodemailer = require("nodemailer");
+const invoiceUnpaidEmail = require("../emails/InvoiceUnpaid");
 
 // get pending students
 const getPendingStudents = async (req, res) => {
@@ -85,6 +87,59 @@ const acceptCourseRequest = async (req, res) => {
       });
       if (payment) {
         console.log("Payment created");
+
+        //
+        setTimeout(async () => {
+          // get payment
+          const myPayment = await Payment.findById(payment._id).populate(
+            "student_id course_id",
+            "firstName lastName email title price"
+          );
+
+          if (myPayment.status < 100) {
+            const email = await Email.findOne({ title: "invoice unpaid" });
+
+            //
+            const remaining_amount =
+              myPayment.course_id.price - myPayment.given_price;
+
+            if (email) {
+              const transporter = nodemailer.createTransport({
+                host: "mail.smartpeddle.com",
+                port: 587,
+                tls: {
+                  rejectUnauthorized: false,
+                },
+                auth: {
+                  user: "collegeassist@smartpeddle.com",
+                  pass: "CollegeAssist23159.",
+                },
+              });
+              const mailOprtions = {
+                from: '"College Assist" <collegeassist@smartpeddle.com>',
+                to: myPayment.student_id.email,
+                subject: email.subject,
+                html: invoiceUnpaidEmail.invoiceUnpaid(
+                  email.content,
+                  myPayment.student_id,
+                  myPayment.course_id,
+                  myPayment,
+                  remaining_amount
+                ),
+              };
+              mailOprtions.headers = {
+                "Content-Type": "text/html",
+              };
+              transporter.sendMail(mailOprtions, (error, info) => {
+                if (error) {
+                  res.send(error);
+                } else {
+                  console.log(`Email send to ${myPayment.student_id.email}!`);
+                }
+              });
+            }
+          }
+        }, 5000);
       } else {
         console.log("Payment doesn't created");
       }
