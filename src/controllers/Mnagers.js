@@ -139,7 +139,7 @@ const acceptCourseRequest = async (req, res) => {
               });
             }
           }
-        }, 5000);
+        },7 * 24 * 60 * 60 * 1000);
       } else {
         console.log("Payment doesn't created");
       }
