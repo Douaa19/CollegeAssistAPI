@@ -1,4 +1,6 @@
-const { User, StudentsCourses, Payment } = require("../models");
+const { User, StudentsCourses, Payment, Email } = require("../models");
+const nodemailer = require("nodemailer");
+const invoiceUnpaidEmail = require("../emails/InvoiceUnpaid");
 
 // get pending students
 const getPendingStudents = async (req, res) => {
@@ -81,9 +83,63 @@ const acceptCourseRequest = async (req, res) => {
         course_id: courseRequest.course_id._id,
         student_id: courseRequest.student_id._id,
         status: 0,
+        given_price: 0,
       });
       if (payment) {
         console.log("Payment created");
+
+        //
+        setTimeout(async () => {
+          // get payment
+          const myPayment = await Payment.findById(payment._id).populate(
+            "student_id course_id",
+            "firstName lastName email title price"
+          );
+
+          if (myPayment.status < 100) {
+            const email = await Email.findOne({ title: "invoice unpaid" });
+
+            //
+            const remaining_amount =
+              myPayment.course_id.price - myPayment.given_price;
+
+            if (email) {
+              const transporter = nodemailer.createTransport({
+                host: "mail.smartpeddle.com",
+                port: 587,
+                tls: {
+                  rejectUnauthorized: false,
+                },
+                auth: {
+                  user: "collegeassist@smartpeddle.com",
+                  pass: "CollegeAssist23159.",
+                },
+              });
+              const mailOprtions = {
+                from: '"College Assist" <collegeassist@smartpeddle.com>',
+                to: myPayment.student_id.email,
+                subject: email.subject,
+                html: invoiceUnpaidEmail.invoiceUnpaid(
+                  email.content,
+                  myPayment.student_id,
+                  myPayment.course_id,
+                  myPayment,
+                  remaining_amount
+                ),
+              };
+              mailOprtions.headers = {
+                "Content-Type": "text/html",
+              };
+              transporter.sendMail(mailOprtions, (error, info) => {
+                if (error) {
+                  res.send(error);
+                } else {
+                  console.log(`Email send to ${myPayment.student_id.email}!`);
+                }
+              });
+            }
+          }
+        },7 * 24 * 60 * 60 * 1000);
       } else {
         console.log("Payment doesn't created");
       }
@@ -95,7 +151,6 @@ const acceptCourseRequest = async (req, res) => {
       res.status(404).send({ messageError: "Request doesn't found" });
     }
   } catch (error) {
-    res;
     res.status(500).send(error.message);
   }
 };

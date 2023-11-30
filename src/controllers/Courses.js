@@ -1,6 +1,10 @@
-const { Course, Tutorial } = require("../models");
+const { Course, Tutorial, Email, StudentsCourses } = require("../models");
 const path = require("path");
 const fs = require("fs");
+const nodemailer = require("nodemailer");
+const schedule = require("node-schedule");
+const courseUpdates = require("../emails/CouseUpdates");
+const deadlinesEmail = require("../emails/Deadlines");
 
 // create course
 const createCourse = async (req, res) => {
@@ -28,6 +32,71 @@ const createCourse = async (req, res) => {
       });
       if (newCourse) {
         res.status(200).send({ messageSuccess: "Course registred", newCourse });
+
+        const dateParts = newCourse.start_date.split("/");
+        const parsedStartDate = new Date(
+          `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`
+        );
+
+        // deadline email
+        const scheduledTime = new Date(parsedStartDate);
+        scheduledTime.setDate(scheduledTime.getDate() - 1);
+        scheduledTime.setHours(9, 0, 0, 0);
+
+        schedule.scheduleJob(scheduledTime, async () => {
+          const studentsCourse = await StudentsCourses.find({
+            course_id: newCourse._id,
+          }).populate(
+            "student_id course_id",
+            "firstName lastName email title start_date"
+          );
+
+          // get deadline email
+          const email = await Email.findOne({ title: "deadlines" });
+
+          if (email && studentsCourse.length > 0) {
+            const transporter = nodemailer.createTransport({
+              host: "mail.smartpeddle.com",
+              port: 587,
+              tls: {
+                rejectUnauthorized: false,
+              },
+              auth: {
+                user: "collegeassist@smartpeddle.com",
+                pass: "CollegeAssist23159.",
+              },
+            });
+            for (const studentCourse of studentsCourse) {
+              const mailOprtions = {
+                from: '"College Assist" <collegeassist@smartpeddle.com>',
+                to: studentCourse.student_id.email,
+                subject: email.subject,
+                html: deadlinesEmail.deadlines(
+                  email.content,
+                  studentCourse.student_id,
+                  studentCourse.course_id
+                ),
+              };
+              mailOprtions.headers = {
+                "Content-Type": "text/html",
+              };
+              try {
+                await transporter.sendMail(mailOprtions);
+                console.log(
+                  `Deadline email sent to ${studentCourse.student_id.email}`
+                );
+              } catch (error) {
+                console.error(
+                  `Error sending email to ${studentCourse.student_id.firstName} ${student.student_id.lastName}:`,
+                  error
+                );
+              }
+            }
+          }
+          console.log(
+            `Deadline emails scheduled to be sent at: ${scheduledTime}`
+          );
+        });
       } else {
         res.status(400).send({ messageError: "Course not registred" });
       }
@@ -134,16 +203,61 @@ const editCourse = async (req, res) => {
           .status(400)
           .send({ messageError: "This title is already exists", courseExists });
       } else {
-        await Course.findByIdAndUpdate(course_id, newData).then((result) => {
-          if (result) {
-            res.status(200).send({
-              messageSuccess: "Course updated successfully!",
-              result,
-            });
-          } else {
-            res.status(400).send({ messageError: "Course doesn't updated!" });
+        await Course.findByIdAndUpdate(course_id, newData).then(
+          async (result) => {
+            if (result) {
+              const students = await StudentsCourses.find({
+                course_id: course_id,
+              }).populate("student_id", "email firstNmae lastName");
+              const email = await Email.findOne({
+                title: "course updates",
+              });
+              if (email) {
+                const transporter = nodemailer.createTransport({
+                  host: "mail.smartpeddle.com",
+                  port: 587,
+                  tls: {
+                    rejectUnauthorized: false,
+                  },
+                  auth: {
+                    user: "collegeassist@smartpeddle.com",
+                    pass: "CollegeAssist23159.",
+                  },
+                });
+                for (const student of students) {
+                  const mailOprtions = {
+                    from: '"College Assist" <collegeassist@smartpeddle.com>',
+                    to: student.student_id.email,
+                    subject: email.subject,
+                    html: courseUpdates.courseUpdates(email.content, result),
+                  };
+                  mailOprtions.headers = {
+                    "Content-Type": "text/html",
+                  };
+                  try {
+                    await transporter.sendMail(mailOprtions);
+                    console.log(
+                      `Course update email sent to ${student.student_id.email}`
+                    );
+                  } catch (error) {
+                    console.error(
+                      `Error sending email to ${student.student_id.firstName} ${student.student_id.lastName}:`,
+                      error
+                    );
+                  }
+                }
+              } else {
+                console.log("Email content not found");
+              }
+              res.status(200).send({
+                messageSuccess: "Course updated successfully!",
+                result,
+              });
+            } else {
+              res.status(400).send({ messageError: "Course doesn't updated!" });
+            }
           }
-        });
+        );
       }
     } else {
       res.status(404).send({ messageError: "Cours doesn't found" });

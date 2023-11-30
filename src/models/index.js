@@ -6,6 +6,7 @@ const Attendence = require("./Attendences");
 const Payment = require("./Payments");
 const Tutorial = require("./Tutorials");
 const Document = require("./Documents");
+const Email = require("./Emails");
 
 module.exports = {
   User,
@@ -16,4 +17,5 @@ module.exports = {
   Payment,
   Tutorial,
   Document,
+  Email,
 };

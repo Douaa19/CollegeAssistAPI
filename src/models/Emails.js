@@ -1,5 +1,9 @@
 const mongoose = require("mongoose");
 
+const content = (content) => {
+  return `${content}`;
+};
+
 // Emails schema
 const Emails = new mongoose.Schema(
   {
