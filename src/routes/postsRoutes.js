@@ -21,6 +21,7 @@ router
 router.route("/").get(authorization, Posts.getPosts);
 
 // get all blog
+router.route("/:post_id").get(authorization, Posts.getPost);
 
 // delete blog
 
