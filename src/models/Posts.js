@@ -4,8 +4,8 @@ const content = (content) => {
   return `${content}`;
 };
 
-// Blogs schema
-const Blogs = new mongoose.Schema(
+// Posts schema
+const Posts = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -25,6 +25,6 @@ const Blogs = new mongoose.Schema(
   }
 );
 
-const Blog = mongoose.model("Blog", Blogs);
+const Post = mongoose.model("Post", Posts);
 
-module.exports = Blog;
+module.exports = Post;

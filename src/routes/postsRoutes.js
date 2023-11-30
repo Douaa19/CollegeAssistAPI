@@ -5,7 +5,7 @@ const router = express.Router();
 const { authorization, authorizationRole } = require("../middlewares");
 
 // controllers
-const { Blogs, uploadImageBlog } = require("../controllers");
+const { Posts, uploadImagePost } = require("../controllers");
 
 // create blog
 router
@@ -13,8 +13,8 @@ router
   .post(
     authorization,
     authorizationRole("super-admin"),
-    uploadImageBlog.single("blog_img"),
-    Blogs.createBlog
+    uploadImagePost.single("post_img"),
+    Posts.createPost
   );
 
 // get blog
