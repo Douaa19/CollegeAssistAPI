@@ -1,4 +1,6 @@
-const { User, StudentsCourses, Course } = require("../models");
+const { User, StudentsCourses, Course, Email } = require("../models");
+const nodemailer = require("nodemailer");
+const courseExpiringEmail = require("../emails/CourseExpiring");
 
 const addCourse = async (req, res) => {
   try {
@@ -7,12 +9,57 @@ const addCourse = async (req, res) => {
     if (!user) {
       res.status(404).send({ messageError: "User not found" });
     } else {
-      const newRequest = await StudentsCourses.create({
-        course_id,
-        student_id: user._id,
-      });
-      if (newRequest) {
-        res.status(200).send(newRequest);
+      // if course expired
+      const email = await Email.findOne({ title: "course expiring" });
+      const course = await Course.findById(course_id);
+
+      const parts = course.start_date.split("/");
+      const reversedDate = parts.reverse().join("/");
+
+      if (new Date(reversedDate) <= new Date()) {
+        if (email && course) {
+          const transporter = nodemailer.createTransport({
+            host: "mail.smartpeddle.com",
+            port: 587,
+            tls: {
+              rejectUnauthorized: false,
+            },
+            auth: {
+              user: "collegeassist@smartpeddle.com",
+              pass: "CollegeAssist23159.",
+            },
+          });
+          const mailOprtions = {
+            from: '"College Assist" <collegeassist@smartpeddle.com>',
+            to: user.email,
+            subject: email.subject,
+            html: courseExpiringEmail.courseExpiring(
+              email.content,
+              user,
+              course
+            ),
+          };
+          mailOprtions.headers = {
+            "Content-Type": "text/html",
+          };
+          transporter.sendMail(mailOprtions, (error, info) => {
+            if (error) {
+              res.send(error);
+            } else {
+              console.log(`Email send to ${user.email}!`);
+              res.send({ message: "Course expired!" });
+            }
+          });
+        }
+      } else {
+        // add course
+        const newRequest = await StudentsCourses.create({
+          course_id,
+          student_id: user._id,
+        });
+        if (newRequest) {
+          res.status(200).send(newRequest);
+        }
       }
     }
   } catch (error) {
