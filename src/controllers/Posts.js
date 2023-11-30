@@ -60,6 +60,20 @@ const createPost = async (req, res) => {
   }
 };
 
+const getPosts = async (req, res) => {
+  try {
+    const posts = await Post.find();
+    if (posts.length > 0) {
+      res.status(200).send(posts);
+    } else {
+      console.log("It's empty");
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createPost,
+  getPosts
 };

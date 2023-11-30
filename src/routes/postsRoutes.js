@@ -18,6 +18,7 @@ router
   );
 
 // get blog
+router.route("/").get(authorization, Posts.getPosts);
 
 // get all blog
 
