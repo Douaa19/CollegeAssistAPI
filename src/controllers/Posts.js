@@ -117,9 +117,48 @@ const deletePost = async (req, res) => {
   }
 };
 
+const editPost = async (req, res) => {
+  try {
+    const { post_id } = req.params;
+    const post = await Post.findById(post_id);
+    const path = "src\\public\\images\\blog\\";
+    if (post) {
+      if (req.file.filename) {
+        fs.unlink(`${path}${post.image}`, (err) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log("Image deleted");
+          }
+        });
+      }
+      const newData = {
+        title: req.body.title,
+        content: req.body.content,
+        image: req.file.filename,
+      };
+
+      const postExists = await Post.findOne({ title: newData.title });
+      if (!postExists) {
+        const editPost = await Post.findByIdAndUpdate(post_id, newData);
+        if (editPost) {
+          res.status(200).send({ editPost, messageSuccess: "Post edited!" });
+        } else {
+          res.send({ messageError: "Post doesn't edited!" });
+        }
+      } else {
+        res.send({ messageError: "This title is already exists" });
+      }
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createPost,
   getPosts,
   getPost,
   deletePost,
+  editPost,
 };

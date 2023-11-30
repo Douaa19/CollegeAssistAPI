@@ -34,5 +34,13 @@ router
   );
 
 // edit post
+router
+  .route("/edit/:post_id")
+  .post(
+    authorization,
+    authorizationRole("super-admin"),
+    uploadImagePost.single("post_img"),
+    Posts.editPost
+  );
 
 module.exports = router;
