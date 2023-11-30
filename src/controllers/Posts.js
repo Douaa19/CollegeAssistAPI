@@ -1,6 +1,8 @@
 const { Post, User, Email } = require("../models");
 const nodemailer = require("nodemailer");
 const blogEmail = require("../emails/Blog");
+const fs = require("fs");
+const path = require("path");
 
 const createPost = async (req, res) => {
   try {
@@ -87,8 +89,37 @@ const getPost = async (req, res) => {
   }
 };
 
+const deletePost = async (req, res) => {
+  try {
+    const { post_id } = req.params;
+    const post = await Post.findByIdAndDelete(post_id);
+    if (post) {
+      fs.unlink(
+        path.join(
+          path.dirname(__dirname),
+          "public",
+          "images",
+          "blog",
+          post.image
+        ),
+        (err) => {
+          if (err) {
+            console.log(err);
+            return;
+          }
+          console.log("Image deleted");
+          res.status(200).send({ messageSuccess: "Post deleted successfully" });
+        }
+      );
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createPost,
   getPosts,
   getPost,
+  deletePost,
 };

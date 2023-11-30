@@ -7,7 +7,7 @@ const { authorization, authorizationRole } = require("../middlewares");
 // controllers
 const { Posts, uploadImagePost } = require("../controllers");
 
-// create blog
+// create post
 router
   .route("/create")
   .post(
@@ -17,14 +17,22 @@ router
     Posts.createPost
   );
 
-// get blog
+// get post
 router.route("/").get(authorization, Posts.getPosts);
 
-// get all blog
+// get all post
 router.route("/:post_id").get(authorization, Posts.getPost);
 
-// delete blog
+// delete post
+router
+  .route("/delete/:post_id")
+  .post(
+    authorization,
+    authorizationRole("super-admin"),
+    uploadImagePost.single("post_img"),
+    Posts.deletePost
+  );
 
-// edit blog
+// edit post
 
 module.exports = router;
