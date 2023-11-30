@@ -8,6 +8,7 @@ const Attendence = require("./Attendences");
 const Documents = require("./Documents");
 const Payments = require("./Payments");
 const Email = require("./Emails");
+const Blogs = require("./Blogs");
 
 const fs = require("fs");
 const path = require("path");
@@ -86,4 +87,5 @@ module.exports = {
   Documents,
   Payments,
   Email,
+  Blogs,
 };
