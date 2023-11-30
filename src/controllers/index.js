@@ -72,6 +72,13 @@ const uploadDocuments = multer({
   ),
 });
 
+const uploadImageBlog = multer({
+  fileFilter: fFilter,
+  storage: storage(
+    path.join(path.dirname(__dirname), "public", "images", "blog")
+  ),
+});
+
 module.exports = {
   uploadImage,
   uploadImageCourse,
@@ -88,4 +95,5 @@ module.exports = {
   Payments,
   Email,
   Blogs,
+  uploadImageBlog,
 };

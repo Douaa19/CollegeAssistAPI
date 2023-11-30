@@ -5,16 +5,24 @@ const router = express.Router();
 const { authorization, authorizationRole } = require("../middlewares");
 
 // controllers
-const { Blogs } = require("../controllers");
+const { Blogs, uploadImageBlog } = require("../controllers");
 
-// create 
+// create blog
+router
+  .route("/create")
+  .post(
+    authorization,
+    authorizationRole("super-admin"),
+    uploadImageBlog.single("blog_img"),
+    Blogs.createBlog
+  );
 
-// get 
+// get blog
 
-// get all
+// get all blog
 
-// delete
+// delete blog
 
-// edit 
+// edit blog
 
 module.exports = router;
