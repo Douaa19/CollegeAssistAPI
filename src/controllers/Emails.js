@@ -39,8 +39,8 @@ const getEmails = async (req, res) => {
 
 const getEmail = async (req, res) => {
   try {
-    const { email_title } = req.params;
-    const email = await Email.findOne({ title: email_title });
+    const { email_id } = req.params;
+    const email = await Email.findById(email_id);
     if (email) {
       res.status(200).send(email);
     } else {

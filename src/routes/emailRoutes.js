@@ -19,7 +19,7 @@ router
 
 // get email
 router
-  .route("/:email_title")
+  .route("/:email_id")
   .get(authorization, authorizationRole("super-admin"), Email.getEmail);
 
 // edit email
