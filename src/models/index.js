@@ -7,7 +7,7 @@ const Payment = require("./Payments");
 const Tutorial = require("./Tutorials");
 const Document = require("./Documents");
 const Email = require("./Emails");
-const Blog = require("./Blogs");
+const Post = require("./Posts");
 
 module.exports = {
   User,
@@ -19,5 +19,5 @@ module.exports = {
   Tutorial,
   Document,
   Email,
-  Blog,
+  Post,
 };

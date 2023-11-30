@@ -11,6 +11,7 @@ const attendence = require("./attendenceRoutes");
 const document = require("./documentsRoutes");
 const payment = require("./paymentsRoutes");
 const email = require("./emailRoutes");
+const post = require("./postsRoutes.js");
 
 app.get("/api", (req, res) => {
   res.json({
@@ -28,5 +29,6 @@ app.use("/api/attendence", attendence);
 app.use("/api/document", document);
 app.use("/api/payment", payment);
 app.use("/api/email", email);
+app.use("/api/post", post);
 
 module.exports = app;

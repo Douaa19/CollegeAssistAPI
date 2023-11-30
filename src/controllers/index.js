@@ -8,6 +8,7 @@ const Attendence = require("./Attendences");
 const Documents = require("./Documents");
 const Payments = require("./Payments");
 const Email = require("./Emails");
+const Posts = require("./Posts");
 
 const fs = require("fs");
 const path = require("path");
@@ -71,6 +72,13 @@ const uploadDocuments = multer({
   ),
 });
 
+const uploadImagePost = multer({
+  fileFilter: fFilter,
+  storage: storage(
+    path.join(path.dirname(__dirname), "public", "images", "blog")
+  ),
+});
+
 module.exports = {
   uploadImage,
   uploadImageCourse,
@@ -86,4 +94,6 @@ module.exports = {
   Documents,
   Payments,
   Email,
+  Posts,
+  uploadImagePost,
 };

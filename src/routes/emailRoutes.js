@@ -12,9 +12,14 @@ router
   .route("/create")
   .post(authorization, authorizationRole("super-admin"), Email.createEmail);
 
+// get emails
+router
+  .route("/")
+  .get(authorization, authorizationRole("super-admin"), Email.getEmails);
+
 // get email
 router
-  .route("/:email_title")
+  .route("/:email_id")
   .get(authorization, authorizationRole("super-admin"), Email.getEmail);
 
 // edit email
