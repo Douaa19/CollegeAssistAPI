@@ -20,6 +20,9 @@ router
 // get post
 router.route("/").get(authorization, Posts.getPosts);
 
+// get post image
+router.route("/image/:post_id").get(Posts.getImage);
+
 // get all post
 router.route("/:post_id").get(authorization, Posts.getPost);
 

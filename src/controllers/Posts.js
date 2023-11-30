@@ -89,6 +89,28 @@ const getPost = async (req, res) => {
   }
 };
 
+const getImage = async (req, res) => {
+  try {
+    await Post.findById(req.params.post_id)
+      .exec()
+      .then((result) => {
+        res
+          .status(200)
+          .sendFile(
+            path.join(
+              path.dirname(__dirname),
+              "public",
+              "images",
+              "blog",
+              result.image
+            )
+          );
+      });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 const deletePost = async (req, res) => {
   try {
     const { post_id } = req.params;
@@ -159,6 +181,7 @@ module.exports = {
   createPost,
   getPosts,
   getPost,
+  getImage,
   deletePost,
   editPost,
 };
