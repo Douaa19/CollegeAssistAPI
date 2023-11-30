@@ -24,6 +24,19 @@ const createEmail = async (req, res) => {
   }
 };
 
+const getEmails = async (req, res) => {
+  try {
+    const emails = await Email.find();
+    if (emails.length > 0) {
+      res.status(200).send(emails);
+    } else {
+      res.status(404).send({ messageError: "Empty" });
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 const getEmail = async (req, res) => {
   try {
     const { email_title } = req.params;
@@ -58,6 +71,7 @@ const editEmail = async (req, res) => {
 
 module.exports = {
   createEmail,
+  getEmails,
   getEmail,
   editEmail,
 };
