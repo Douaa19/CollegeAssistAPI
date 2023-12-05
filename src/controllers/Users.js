@@ -496,6 +496,7 @@ const assingStudentsToManagers = async (req, res) => {
       role: "student",
       status: "pending",
       createdAt: { $gte: yesterday, $lt: endOfYesterday },
+      manager_id: null,
     });
 
     // Fetch managers
@@ -515,14 +516,6 @@ const assingStudentsToManagers = async (req, res) => {
     res.status(500).send(error.message);
   }
 };
-
-cron.schedule("0 0 * * *", async () => {
-  try {
-    await assingStudentsToManagers();
-  } catch (error) {
-    console.error("Error executing assingStudentsToManagers", error.message);
-  }
-});
 
 // get profile
 const getProfile = async (req, res) => {
