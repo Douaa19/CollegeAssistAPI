@@ -122,6 +122,8 @@ const getCourse = async (req, res) => {
           tutorialsCourse.push(tutorials[i]);
         }
         res.status(200).send({ course, tutorials: tutorialsCourse });
+      } else {
+        res.status(200).send({ course });
       }
     }
   } catch (error) {

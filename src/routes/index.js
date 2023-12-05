@@ -12,6 +12,7 @@ const document = require("./documentsRoutes");
 const payment = require("./paymentsRoutes");
 const email = require("./emailRoutes");
 const post = require("./postsRoutes.js");
+const admin = require("./superAdminRoutes.js");
 
 app.get("/api", (req, res) => {
   res.json({
@@ -30,5 +31,7 @@ app.use("/api/document", document);
 app.use("/api/payment", payment);
 app.use("/api/email", email);
 app.use("/api/post", post);
+app.use("/api/post", post);
+app.use("/api/super-admin", admin);
 
 module.exports = app;
