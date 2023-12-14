@@ -40,6 +40,12 @@ const getUniversity = async (req, res) => {
 
 const getUniversities = async (req, res) => {
   try {
+    const universities = await University.find().populate("country_id", "name");
+    if (universities.length > 0) {
+      res.status(200).send(universities);
+    } else {
+      res.status(404).send(universities.lenght);
+    }
   } catch (error) {
     res.status(500).send(error.message);
   }

@@ -13,6 +13,6 @@ const Countries = new mongoose.Schema(
   }
 );
 
-const County = mongoose.model("County", Countries);
+const Country = mongoose.model("Country", Countries);
 
-module.exports = County;
+module.exports = Country;

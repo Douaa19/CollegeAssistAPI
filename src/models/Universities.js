@@ -18,7 +18,7 @@ const Universities = new mongoose.Schema(
     country_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Country",
-      required: true,
+      default: null,
     },
   },
   {
