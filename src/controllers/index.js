@@ -84,7 +84,7 @@ const uploadImagePost = multer({
 const uploadImageUniversity = multer({
   fileFilter: fFilter,
   storage: storage(
-    path.join(path.dirname(__dirname), "public", "images", "university")
+    path.join(path.dirname(__dirname), "public", "images", "universities")
   ),
 });
 
