@@ -10,6 +10,7 @@ const Payments = require("./Payments");
 const Email = require("./Emails");
 const Posts = require("./Posts");
 const SuperAdmin = require("./SuperAdmin");
+const Universities = require("./Universities");
 
 const fs = require("fs");
 const path = require("path");
@@ -80,6 +81,13 @@ const uploadImagePost = multer({
   ),
 });
 
+const uploadImageUniversity = multer({
+  fileFilter: fFilter,
+  storage: storage(
+    path.join(path.dirname(__dirname), "public", "images", "university")
+  ),
+});
+
 module.exports = {
   uploadImage,
   uploadImageCourse,
@@ -98,4 +106,6 @@ module.exports = {
   Posts,
   SuperAdmin,
   uploadImagePost,
+  Universities,
+  uploadImageUniversity,
 };
