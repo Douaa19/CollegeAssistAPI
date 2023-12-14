@@ -33,6 +33,15 @@ const createUniversity = async (req, res) => {
 
 const getUniversity = async (req, res) => {
   try {
+    const { university_id } = req.params;
+    const university = await University.findById(university_id).populate(
+      "country_id"
+    );
+    if (university) {
+      res.status(200).send(university);
+    } else {
+      res.status(404).send({ messageError: "University doesn't found!" });
+    }
   } catch (error) {
     res.status(500).send(error.message);
   }
