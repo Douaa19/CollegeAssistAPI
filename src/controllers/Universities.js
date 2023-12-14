@@ -86,6 +86,30 @@ const getUniversityImage = async (req, res) => {
 
 const deleteUniversity = async (req, res) => {
   try {
+    const { university_id } = req.params;
+    const university = await University.findByIdAndDelete(university_id);
+    if (university) {
+      fs.unlink(
+        path.join(
+          path.dirname(__dirname),
+          "public",
+          "images",
+          "universities",
+          university.image
+        ),
+        (err) => {
+          if (err) {
+            console.log(err);
+            return;
+          }
+          res
+            .status(200)
+            .send({ messageSuccess: "University deleted successfully" });
+        }
+      );
+    } else {
+      res.status(500).send("Somthing goes wrong in back");
+    }
   } catch (error) {
     res.status(500).send(error.message);
   }
