@@ -8,6 +8,7 @@ const Tutorial = require("./Tutorials");
 const Document = require("./Documents");
 const Email = require("./Emails");
 const Post = require("./Posts");
+const University = require("./Universities");
 
 module.exports = {
   User,
@@ -20,4 +21,5 @@ module.exports = {
   Document,
   Email,
   Post,
+  University,
 };
