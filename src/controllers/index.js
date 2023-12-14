@@ -10,6 +10,7 @@ const Payments = require("./Payments");
 const Email = require("./Emails");
 const Posts = require("./Posts");
 const SuperAdmin = require("./SuperAdmin");
+const Universities = require("./Universities");
 
 const fs = require("fs");
 const path = require("path");
@@ -98,4 +99,5 @@ module.exports = {
   Posts,
   SuperAdmin,
   uploadImagePost,
+  Universities,
 };
