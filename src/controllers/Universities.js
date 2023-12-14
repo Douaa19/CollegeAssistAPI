@@ -1,4 +1,6 @@
 const { University } = require("../models");
+const path = require("path");
+const fs = require("fs");
 
 const createUniversity = async (req, res) => {
   try {
@@ -60,6 +62,28 @@ const getUniversities = async (req, res) => {
   }
 };
 
+const getUniversityImage = async (req, res) => {
+  try {
+    await University.findById(req.params.university_id)
+      .exec()
+      .then((result) => {
+        res
+          .status(200)
+          .sendFile(
+            path.join(
+              path.dirname(__dirname),
+              "public",
+              "images",
+              "universities",
+              result.image
+            )
+          );
+      });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 const deleteUniversity = async (req, res) => {
   try {
   } catch (error) {
@@ -85,6 +109,7 @@ module.exports = {
   createUniversity,
   getUniversity,
   getUniversities,
+  getUniversityImage,
   deleteUniversity,
   updateUniversity,
   filterUniversity,

@@ -23,6 +23,9 @@ router.route("/").get(Universities.getUniversities);
 // get university
 router.route("/:university_id").get(Universities.getUniversity);
 
+// get university's image
+router.route("/image/:university_id").get(Universities.getUniversityImage);
+
 // update university
 router
   .route("/edit/:university_id")
