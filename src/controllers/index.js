@@ -81,6 +81,13 @@ const uploadImagePost = multer({
   ),
 });
 
+const uploadImageUniversity = multer({
+  fileFilter: fFilter,
+  storage: storage(
+    path.join(path.dirname(__dirname), "public", "images", "university")
+  ),
+});
+
 module.exports = {
   uploadImage,
   uploadImageCourse,
@@ -100,4 +107,5 @@ module.exports = {
   SuperAdmin,
   uploadImagePost,
   Universities,
+  uploadImageUniversity,
 };
