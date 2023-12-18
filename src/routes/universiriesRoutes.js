@@ -20,6 +20,9 @@ router
 // get universities
 router.route("/").get(Universities.getUniversities);
 
+// search universities
+router.route("/search/").get(Universities.filterUniversity);
+
 // get university
 router.route("/:university_id").get(Universities.getUniversity);
 
@@ -45,7 +48,5 @@ router
     Universities.deleteUniversity
   );
 
-// filter universities
-router.route("/filter").get(Universities.filterUniversity);
 
 module.exports = router;
