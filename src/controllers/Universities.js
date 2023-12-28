@@ -1,10 +1,21 @@
-const { University } = require("../models");
+const { University, ApplicationDeadline } = require("../models");
 const path = require("path");
 const fs = require("fs");
 
 const createUniversity = async (req, res) => {
   try {
-    const data = [req.body.name, req.body.description, req.body.country_id];
+    const data = [
+      req.body.name,
+      req.body.description,
+      req.body.country_id,
+      req.body.address,
+    ];
+    const phones = req.body.phones ? req.body.phones.split(",") : null;
+    const emails = req.body.emails ? req.body.emails.split(",") : null;
+    const links = req.body.links ? req.body.links.split(",") : null;
+    const socialMediaLinks = req.body.socialMediaLinks
+      ? req.body.socialMediaLinks.split(",")
+      : null;
     const image = req.file.filename;
     const universityExists = await University.findOne({
       name: data[0],
@@ -21,6 +32,11 @@ const createUniversity = async (req, res) => {
         description: data[1],
         country_id: data[2],
         image,
+        address: data[3],
+        phones,
+        emails,
+        links,
+        socialMediaLinks,
       });
       if (newUniversity) {
         res.status(200).send(newUniversity);

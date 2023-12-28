@@ -22,28 +22,28 @@ const Universities = new mongoose.Schema(
     },
     phones: [
       {
-        type: Stryng,
+        type: String,
         required: false,
         default: null,
       },
     ],
     emails: [
       {
-        type: Stryng,
+        type: String,
         required: false,
         default: null,
       },
     ],
     links: [
       {
-        type: Stryng,
+        type: String,
         required: false,
         default: null,
       },
     ],
     socialMediaLinks: [
       {
-        type: Stryng,
+        type: String,
         required: false,
         default: null,
       },
