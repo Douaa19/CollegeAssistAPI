@@ -9,6 +9,7 @@ const Document = require("./Documents");
 const Email = require("./Emails");
 const Post = require("./Posts");
 const University = require("./Universities");
+const ApplicationDeadline = require("./ApplicationDeadlines");
 
 module.exports = {
   User,
@@ -22,4 +23,5 @@ module.exports = {
   Email,
   Post,
   University,
+  ApplicationDeadline,
 };
