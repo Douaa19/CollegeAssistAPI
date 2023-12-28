@@ -20,6 +20,39 @@ const Universities = new mongoose.Schema(
       ref: "Country",
       default: null,
     },
+    phones: [
+      {
+        type: Stryng,
+        required: false,
+        default: null,
+      },
+    ],
+    emails: [
+      {
+        type: Stryng,
+        required: false,
+        default: null,
+      },
+    ],
+    links: [
+      {
+        type: Stryng,
+        required: false,
+        default: null,
+      },
+    ],
+    socialMediaLinks: [
+      {
+        type: Stryng,
+        required: false,
+        default: null,
+      },
+    ],
+    address: {
+      type: String,
+      required: false,
+      default: null,
+    },
   },
   {
     timestamps: true,
