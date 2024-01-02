@@ -11,6 +11,7 @@ const Email = require("./Emails");
 const Posts = require("./Posts");
 const SuperAdmin = require("./SuperAdmin");
 const Universities = require("./Universities");
+const ApplicationDeadlines = require("./ApplicationDeadlines");
 
 const fs = require("fs");
 const path = require("path");
@@ -108,4 +109,5 @@ module.exports = {
   uploadImagePost,
   Universities,
   uploadImageUniversity,
+  ApplicationDeadlines,
 };
