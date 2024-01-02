@@ -48,5 +48,4 @@ router
     Universities.deleteUniversity
   );
 
-
 module.exports = router;

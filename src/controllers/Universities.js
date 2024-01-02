@@ -9,6 +9,7 @@ const createUniversity = async (req, res) => {
       req.body.description,
       req.body.country_id,
       req.body.address,
+      req.body.applicationDeadlines,
     ];
     const phones = req.body.phones ? req.body.phones.split(",") : null;
     const emails = req.body.emails ? req.body.emails.split(",") : null;
