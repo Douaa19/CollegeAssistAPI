@@ -156,6 +156,12 @@ const updateUniversity = async (req, res) => {
         description: req.body.description,
         country_id: req.body.country_id,
         image: req.file.filename,
+        phones: req.body.phones ? req.body.phones.split(",") : null,
+        emails: req.body.emails ? req.body.emails.split(",") : null,
+        links: req.body.links ? req.body.links.split(",") : null,
+        socialMediaLinks: req.body.socialMediaLinks
+          ? req.body.socialMediaLinks.split(",")
+          : null,
       };
 
       const universityExists = await University.findOne({
