@@ -16,4 +16,13 @@ router
     ApplicationDeadlines.createApplicationDeadline
   );
 
+// edit
+router
+  .route("/edit/:application_id")
+  .post(
+    authorization,
+    authorizationRole("manager"),
+    ApplicationDeadlines.editApplicationDeadline
+  );
+
 module.exports = router;

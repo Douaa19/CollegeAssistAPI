@@ -31,6 +31,39 @@ const createApplicationDeadline = async (req, res) => {
   }
 };
 
+// edit
+const editApplicationDeadline = async (req, res) => {
+  try {
+    const { application_id } = req.params;
+    const applicationDeadline = await ApplicationDeadline.findById(
+      application_id
+    );
+    const data = {
+      month: req.body.month,
+      year: req.body.year,
+      decisions: req.body.decisions
+        ? req.body.decisions.split(",")
+        : applicationDeadline.decisions,
+    };
+    
+
+    const editedApplication = await ApplicationDeadline.findByIdAndUpdate(
+      application_id,
+      data
+    );
+    if (editedApplication) {
+      res.status(200).send(editedApplication);
+    } else {
+      res
+        .status(400)
+        .send({ messageError: "Application deadline doesn't edited!" });
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createApplicationDeadline,
+  editApplicationDeadline,
 };
