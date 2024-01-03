@@ -25,4 +25,13 @@ router
     ApplicationDeadlines.editApplicationDeadline
   );
 
+// get application deadlines by university_id
+router
+  .route("/:university_id")
+  .get(
+    authorization,
+    authorizationRole("manager"),
+    ApplicationDeadlines.getApplicationDeadlines
+  );
+
 module.exports = router;

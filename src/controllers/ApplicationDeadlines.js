@@ -45,7 +45,6 @@ const editApplicationDeadline = async (req, res) => {
         ? req.body.decisions.split(",")
         : applicationDeadline.decisions,
     };
-    
 
     const editedApplication = await ApplicationDeadline.findByIdAndUpdate(
       application_id,
@@ -63,7 +62,27 @@ const editApplicationDeadline = async (req, res) => {
   }
 };
 
+// get application deadlines by university_id
+const getApplicationDeadlines = async (req, res) => {
+  try {
+    const { university_id } = req.params;
+    const applicationDeadlines = await ApplicationDeadline.find({
+      university_id,
+    });
+    if (applicationDeadlines.length > 0) {
+      res.status(200).send(applicationDeadlines);
+    } else {
+      res
+        .status(404)
+        .send({ messageError: "Application deadlines not found!" });
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 module.exports = {
   createApplicationDeadline,
   editApplicationDeadline,
+  getApplicationDeadlines,
 };
