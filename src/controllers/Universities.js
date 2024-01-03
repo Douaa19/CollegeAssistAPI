@@ -104,6 +104,9 @@ const getUniversityImage = async (req, res) => {
 const deleteUniversity = async (req, res) => {
   try {
     const { university_id } = req.params;
+    const applicationDeadline = await ApplicationDeadline.deleteMany({
+      university_id: university_id,
+    });
     const university = await University.findByIdAndDelete(university_id);
     if (university) {
       fs.unlink(
