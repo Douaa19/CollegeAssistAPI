@@ -56,8 +56,11 @@ const getUniversity = async (req, res) => {
     const university = await University.findById(university_id).populate(
       "country_id"
     );
-    if (university) {
-      res.status(200).send(university);
+    const applicationDeadlines = await ApplicationDeadline.find({
+      university_id: university._id,
+    });
+    if (university && applicationDeadlines.length > 0) {
+      res.status(200).send({ university, applicationDeadlines });
     } else {
       res.status(404).send({ messageError: "University doesn't found!" });
     }
