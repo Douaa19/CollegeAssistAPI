@@ -20,6 +20,11 @@ const ApplicationDeadlines = new mongoose.Schema(
         default: null,
       },
     ],
+    university_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "University",
+      required: true,
+    },
   },
   {
     timestamps: true,

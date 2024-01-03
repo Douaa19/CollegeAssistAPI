@@ -9,6 +9,7 @@ const createUniversity = async (req, res) => {
       req.body.description,
       req.body.country_id,
       req.body.address,
+      req.body.applicationDeadlines,
     ];
     const phones = req.body.phones ? req.body.phones.split(",") : null;
     const emails = req.body.emails ? req.body.emails.split(",") : null;
@@ -55,8 +56,11 @@ const getUniversity = async (req, res) => {
     const university = await University.findById(university_id).populate(
       "country_id"
     );
-    if (university) {
-      res.status(200).send(university);
+    const applicationDeadlines = await ApplicationDeadline.find({
+      university_id: university._id,
+    });
+    if (university && applicationDeadlines.length > 0) {
+      res.status(200).send({ university, applicationDeadlines });
     } else {
       res.status(404).send({ messageError: "University doesn't found!" });
     }
@@ -103,6 +107,9 @@ const getUniversityImage = async (req, res) => {
 const deleteUniversity = async (req, res) => {
   try {
     const { university_id } = req.params;
+    const applicationDeadline = await ApplicationDeadline.deleteMany({
+      university_id: university_id,
+    });
     const university = await University.findByIdAndDelete(university_id);
     if (university) {
       fs.unlink(
@@ -156,6 +163,16 @@ const updateUniversity = async (req, res) => {
         description: req.body.description,
         country_id: req.body.country_id,
         image: req.file.filename,
+        phones: req.body.phones
+          ? req.body.phones.split(",")
+          : university.phones,
+        emails: req.body.emails
+          ? req.body.emails.split(",")
+          : university.emails,
+        links: req.body.links ? req.body.links.split(",") : university.links,
+        socialMediaLinks: req.body.socialMediaLinks
+          ? req.body.socialMediaLinks.split(",")
+          : university.socialMediaLinks,
       };
 
       const universityExists = await University.findOne({

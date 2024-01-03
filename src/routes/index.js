@@ -14,6 +14,7 @@ const email = require("./emailRoutes");
 const post = require("./postsRoutes.js");
 const admin = require("./superAdminRoutes.js");
 const university = require("./universiriesRoutes.js");
+const applicationDeadline = require("./applicationDeadlinesRoutes.js");
 
 app.get("/api", (req, res) => {
   res.json({
@@ -35,5 +36,6 @@ app.use("/api/post", post);
 app.use("/api/post", post);
 app.use("/api/super-admin", admin);
 app.use("/api/university", university);
+app.use("/api/applicationDeadline", applicationDeadline);
 
 module.exports = app;
