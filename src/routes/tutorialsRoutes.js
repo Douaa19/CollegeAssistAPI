@@ -20,7 +20,7 @@ router.route("/").get(authorization, Tutorial.getTutorials);
 
 router.route("/:tutorial_id").get(authorization, Tutorial.getTutorial);
 
-router.route("/attachment/:attachment").get(Tutorial.getAttachment);
+router.route("/attachment/:tutorial_id").get(Tutorial.getAttachment);
 
 router.route("/tutorials-course/:course_id").get(Tutorial.getTutorialsByCourse);
 

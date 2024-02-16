@@ -65,7 +65,7 @@ const getTutorial = async (req, res) => {
 // get attachment
 const getAttachment = async (req, res) => {
   try {
-    await Tutorial.findOne({ attachment: req.params.attachment })
+    await Tutorial.findById(req.params.tutorial_id)
       .exec()
       .then((result) => {
         res
