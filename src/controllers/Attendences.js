@@ -9,7 +9,8 @@ const addAttendece = async (req, res) => {
     const date = moment.utc(dateStr).format("DD/MM/YYYY");
     const course = await Course.findById(req.body.course_id);
     if (course) {
-      if (date.replace(/\./g, "/") == course.start_date) {
+      // console.log(date.replace(/\./g, "/") <= course.start_date);
+      if (date.replace(/\./g, "/") == course.start_date || date.replace(/\./g, "/") < course.start_date) {
         const attendence = {
           student_id: req.body.student_id,
           course_id: req.body.course_id,
