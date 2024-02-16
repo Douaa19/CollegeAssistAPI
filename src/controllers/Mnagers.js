@@ -24,8 +24,9 @@ const acceptStudent = async (req, res) => {
   try {
     const { student_id } = req.params;
     const student = await User.findById(student_id);
-    if (student) {
+    if (student.status === "pending") {
       student.status = "accepted";
+      student.save();
       res.status(200).send({ messageSuccess: "Student accepted" });
     } else {
       res.status(400).send({ messageError: "Student not found" });
@@ -139,7 +140,7 @@ const acceptCourseRequest = async (req, res) => {
               });
             }
           }
-        },7 * 24 * 60 * 60 * 1000);
+        }, 7 * 24 * 60 * 60 * 1000);
       } else {
         console.log("Payment doesn't created");
       }
