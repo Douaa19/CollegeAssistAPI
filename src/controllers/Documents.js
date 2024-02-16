@@ -1,5 +1,6 @@
 const { Document, Course, StudentsCourses, User } = require("../models");
 const fs = require("fs");
+const path = require("path");
 
 const addDocument = async (req, res) => {
   try {
