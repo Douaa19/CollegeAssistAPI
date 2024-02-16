@@ -134,7 +134,7 @@ const getCourse = async (req, res) => {
 // get course's image
 const getImage = async (req, res) => {
   try {
-    await Course.findOne({ image_course: req.params.image_name })
+    await Course.findById(req.params.cours_id)
       .exec()
       .then((result) => {
         res
