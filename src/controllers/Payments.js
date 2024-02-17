@@ -7,7 +7,7 @@ const getPaymentStatus = async (req, res) => {
     const student_id = req.user.id;
     const payment = await Payment.findOne({ student_id }).populate(
       "student_id course_id",
-      "_id title price"
+      "_id firstName lastName title price"
     );
 
     if (payment) {

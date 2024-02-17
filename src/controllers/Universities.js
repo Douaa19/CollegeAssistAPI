@@ -59,7 +59,7 @@ const getUniversity = async (req, res) => {
     const applicationDeadlines = await ApplicationDeadline.find({
       university_id: university._id,
     });
-    if (university && applicationDeadlines.length > 0) {
+    if (university && applicationDeadlines) {
       res.status(200).send({ university, applicationDeadlines });
     } else {
       res.status(404).send({ messageError: "University doesn't found!" });
@@ -214,11 +214,12 @@ const filterUniversity = async (req, res) => {
     const textSearchQUery = {
       $or: [
         { name: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
         { "country_id.name": { $regex: search, $options: "i" } },
       ],
     };
 
-    const universities = await University.find(textSearchQUery)
+    let universities = await University.find(textSearchQUery)
       .populate("country_id")
       .sort(sort)
       .limit(limit)
